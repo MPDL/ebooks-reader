@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="de.mpg.mpdl.ebooksreader.activity"
+    android:installLocation="auto">
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <application
+        android:name="de.mpg.mpdl.ebooksreader.EbooksReaderApp"
+        android:icon="@drawable/ic_mupdf"
+        android:label="Ebooks Reader"
+        android:theme="@style/AppTheme">
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".LibraryActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden">
+        </activity>
+    </application>
+
+</manifest>
