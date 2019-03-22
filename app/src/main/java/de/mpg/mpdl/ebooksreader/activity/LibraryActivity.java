@@ -65,7 +65,7 @@ public class LibraryActivity extends ListActivity
 		super.onCreate(savedInstanceState);
 
 		/* Hide 'home' icon on old themes */
-		getActionBar().setDisplayShowHomeEnabled(false);
+//		getActionBar().setDisplayShowHomeEnabled(false);
 
 		prefs = getPreferences(Context.MODE_PRIVATE);
 
