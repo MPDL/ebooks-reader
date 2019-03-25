@@ -4,9 +4,7 @@
     <string name="library_not_a_directory">[not a directory]</string>
     <string name="library_permission_denied">[permission denied]</string>
 
-    <string name="search_upper_cased">SEARCH</string>
-
-
+    <string name="search_hint">SEARCH</string>
 
 
     <!--descriptions-->

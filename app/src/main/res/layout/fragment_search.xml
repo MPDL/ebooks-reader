@@ -12,21 +12,24 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="115dp"
         android:src="@drawable/ic_mupdf"
         android:contentDescription="@string/desc_ebooks_search_image_view" />
 
-    <SearchView
+    <android.support.v7.widget.SearchView
         android:id="@+id/ebooksSearchView"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_below="@id/ebooksSearchImageView"
-        android:layout_marginHorizontal="48dp"
+        android:layout_marginHorizontal="75dp"
         android:layout_marginTop="48dp"
         android:orientation="horizontal"
-        android:queryHint="@string/search_upper_cased"
+        app:defaultQueryHint="@string/search_hint"
+        app:queryBackground="@null"
+        app:submitBackground="@null"
+        app:searchHintIcon="@null"
         android:background="@drawable/bg_search_rounded">
-    </SearchView>
+    </android.support.v7.widget.SearchView>
 
 
     <TextView
@@ -35,17 +38,18 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/ebooksSearchView"
         android:layout_marginTop="64dp"
-        android:layout_marginHorizontal="48dp"
+        android:layout_marginHorizontal="64.5dp"
         android:text="@string/label_mpg_ebooks"
         android:textStyle="bold"/>
 
     <TextView
-        android:id="@+id/ebooksDescription"
+        android:id="@+id/ebooksDescriptionTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/ebooksLabel"
         android:layout_marginTop="16dp"
-        android:layout_marginHorizontal="48dp"
+        android:layout_marginHorizontal="64.5dp"
+        android:textSize="20sp"
         android:text="@string/desc_mpg_ebooks" />
 
 
