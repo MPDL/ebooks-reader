@@ -4,6 +4,14 @@
     <string name="library_not_a_directory">[not a directory]</string>
     <string name="library_permission_denied">[permission denied]</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="search_upper_cased">SEARCH</string>
+
+
+
+
+    <!--descriptions-->
+    <string name="desc_ebooks_search_image_view">logo of mpg ebooks</string>
+    <string name="label_mpg_ebooks">MPG.eBooks</string>
+    <string name="desc_mpg_ebooks">On this search platform, you can find all e-books that are accessible to all institutes of Max Planck Gesellschaft. Currently, you have access to 650,000 titles from various publishers and e-book providers. The contents are continuously extended and updated. Click here for an overview of the included e-books.</string>
+
 </resources>

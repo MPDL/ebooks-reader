@@ -36,7 +36,7 @@ android {
     compileSdkVersion 26
     defaultConfig {
         applicationId "de.mpg.mpdl.ebooksreader"
-        minSdkVersion 16
+        minSdkVersion 26
         targetSdkVersion 26
         versionName '1.0.0'
         versionCode 1

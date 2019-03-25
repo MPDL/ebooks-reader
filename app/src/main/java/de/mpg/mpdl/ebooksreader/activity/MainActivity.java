@@ -25,11 +25,11 @@ public class MainActivity extends BaseCompatActivity {
 
     @Override
     protected void initContentView(Bundle savedInstanceState) {
-//        Intent intent = new Intent(this, LibraryActivity.class);
-//        startActivity(intent);
+        Intent intent = new Intent(this, LibraryActivity.class);
+        startActivity(intent);
 
-        fragmentsViewPager = (ViewPager) findViewById(R.id.fragmentsViewPager);
-        tabLayout = (TabLayout) findViewById(R.id.tabLayout);
+        fragmentsViewPager = findViewById(R.id.fragmentsViewPager);
+        tabLayout = findViewById(R.id.tabLayout);
 
         tabAdapter = new TabAdapter(getSupportFragmentManager());
         tabAdapter.addFragment(new SearchFragment(), "search");

@@ -1,12 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="de.mpg.mpdl.ebooksreader.activity.fragment.SearchFragment">
 
-    <TextView
+
+    <ImageView
+        android:id="@+id/ebooksSearchImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="48dp"
+        android:src="@drawable/ic_mupdf"
+        android:contentDescription="@string/desc_ebooks_search_image_view" />
+
+    <SearchView
+        android:id="@+id/ebooksSearchView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="search" />
+        android:layout_height="40dp"
+        android:layout_below="@id/ebooksSearchImageView"
+        android:layout_marginHorizontal="48dp"
+        android:layout_marginTop="48dp"
+        android:orientation="horizontal"
+        android:queryHint="@string/search_upper_cased"
+        android:background="@drawable/bg_search_rounded">
+    </SearchView>
+
+
+    <TextView
+        android:id="@+id/ebooksLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ebooksSearchView"
+        android:layout_marginTop="64dp"
+        android:layout_marginHorizontal="48dp"
+        android:text="@string/label_mpg_ebooks"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/ebooksDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ebooksLabel"
+        android:layout_marginTop="16dp"
+        android:layout_marginHorizontal="48dp"
+        android:text="@string/desc_mpg_ebooks" />
+
+
 </RelativeLayout>
