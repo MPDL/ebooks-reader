@@ -40,12 +40,5 @@ public class MainActivity extends BaseCompatActivity {
         fragmentsViewPager.setAdapter(tabAdapter);
         tabLayout.setupWithViewPager(fragmentsViewPager);
 
-        Log.e("px2dp",""+px2dip(getApplicationContext(), 160));
-
-    }
-
-    public float px2dip(Context context, float pxValue) {
-        float scale = context.getResources().getDisplayMetrics().density;
-        return (pxValue / scale + 0.5f);
     }
 }

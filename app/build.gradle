@@ -25,6 +25,7 @@ dependencies {
     implementation 'com.trello:rxlifecycle:1.0'
     implementation 'com.trello:rxlifecycle-android:1.0'
     implementation 'com.trello:rxlifecycle-components:1.0'
+    implementation 'com.android.support:recyclerview-v7:26.+'
 
     if (file('../lib/build.gradle').isFile())
         api project(':lib')

@@ -11,7 +11,7 @@
         android:icon="@drawable/ic_mupdf"
         android:label="Ebooks Reader"
         android:theme="@style/AppTheme">
-        <activity android:name=".BookDescriptionActivity"></activity>
+        <activity android:name=".BookDescriptionActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,7 +21,7 @@
         </activity>
         <activity
             android:name=".LibraryActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden"></activity>
+            android:configChanges="orientation|screenSize|keyboardHidden" />
     </application>
 
 </manifest>
