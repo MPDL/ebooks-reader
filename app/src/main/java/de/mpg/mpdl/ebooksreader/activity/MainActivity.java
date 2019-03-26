@@ -39,6 +39,12 @@ public class MainActivity extends BaseCompatActivity {
 
         fragmentsViewPager.setAdapter(tabAdapter);
         tabLayout.setupWithViewPager(fragmentsViewPager);
+        Log.e("px2dp","search ori top:"+px2dip(getApplicationContext(), 314));
+        Log.e("px2dp","search top:"+px2dip(getApplicationContext(), 290));
+    }
 
+    public float px2dip(Context context, float pxValue) {
+        float scale = context.getResources().getDisplayMetrics().density;
+        return (pxValue / scale + 0.5f);
     }
 }
