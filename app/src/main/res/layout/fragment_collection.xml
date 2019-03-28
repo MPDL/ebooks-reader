@@ -3,11 +3,95 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="de.mpg.mpdl.ebooksreader.activity.fragment.CollectionFragment">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="collection" />
+    <ImageView
+        android:id="@+id/finishEditBookshelfImageView"
+        android:layout_height="24.5dp"
+        android:layout_width="24.5dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="24.5dp"
+        android:layout_alignParentStart="true"
+        android:layout_marginHorizontal="24.5dp"
+        android:src="@drawable/ic_back"
+        android:contentDescription="@string/desc_back_image_view"
+        android:visibility="gone"/>
 
+    <TextView
+        android:id="@+id/myBookshelfLabel"
+        android:layout_height="24.5dp"
+        android:layout_width="128.5dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="24.5dp"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:text="@string/my_bookshelf"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/deleteImageView"
+        android:layout_height="24.5dp"
+        android:layout_width="24.5dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="24.5dp"
+        android:layout_marginHorizontal="24.5dp"
+        android:src="@drawable/ic_delete"
+        android:contentDescription="@string/desc_back_image_view"
+        android:visibility="gone"/>
+
+    <ImageView
+        android:id="@+id/editImageView"
+        android:layout_height="24.5dp"
+        android:layout_width="24.5dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="24.5dp"
+        android:layout_marginHorizontal="24.5dp"
+        android:src="@drawable/ic_edit"
+        android:contentDescription="@string/desc_edit_image_view" />
+
+    <android.support.v7.widget.SearchView
+        android:id="@+id/ebooksDownloadedSearchView"
+        android:layout_width="match_parent"
+        android:layout_height="60.5dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginHorizontal="64.5dp"
+        android:layout_marginTop="76.5dp"
+        android:orientation="horizontal"
+        android:focusableInTouchMode="true"
+        app:queryBackground="@null"
+        app:submitBackground="@null"
+        android:background="@drawable/bg_search_rounded">
+    </android.support.v7.widget.SearchView>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ebooksDownloadedSearchView"
+        android:layout_marginTop="16.5dp"
+        android:layout_marginBottom="64.5dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal">
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/bookshelfRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="60.5dp">
+
+            </android.support.v7.widget.RecyclerView>
+
+            <TextView
+                android:id="@+id/booksCountTextView"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_marginTop="24.5dp"
+                android:gravity="center" />
+        </LinearLayout>
+    </ScrollView>
 </RelativeLayout>

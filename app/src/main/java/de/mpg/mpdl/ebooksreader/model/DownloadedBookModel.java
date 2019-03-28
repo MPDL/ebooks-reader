@@ -1,16 +1,17 @@
 package de.mpg.mpdl.ebooksreader.model;
 
-public class BookModel {
+public class DownloadedBookModel {
     private String title;
     private String author;
+    private boolean isChecked;
 
-
-    public BookModel() {
+    public DownloadedBookModel() {
     }
 
-    public BookModel(String title, String author) {
+    public DownloadedBookModel(String title, String author, boolean isChecked) {
         this.title = title;
         this.author = author;
+        this.isChecked = isChecked;
     }
 
     public String getTitle() {
@@ -27,5 +28,13 @@ public class BookModel {
 
     public void setAuthor(String author) {
         this.author = author;
+    }
+
+    public boolean isChecked() {
+        return isChecked;
+    }
+
+    public void setChecked(boolean checked) {
+        isChecked = checked;
     }
 }

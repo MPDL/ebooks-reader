@@ -1,13 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="de.mpg.mpdl.ebooksreader.activity.fragment.UserFragment">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="user" />
+    <ImageView
+        android:id="@+id/avatarImageView"
+        android:layout_width="120.5dp"
+        android:layout_height="120.5dp"
+        android:layout_marginTop="64.5dp"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/ic_user"
+        android:contentDescription="@string/desc_avatar_image_view"/>
 
-</FrameLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/avatarImageView" />
+
+</RelativeLayout>
