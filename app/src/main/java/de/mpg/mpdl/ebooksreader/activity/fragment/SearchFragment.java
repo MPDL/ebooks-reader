@@ -96,9 +96,8 @@ public class SearchFragment extends Fragment implements SearchResultAdapter.Book
 
         searchResultRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         List<BookModel> bookModelList = new ArrayList<>();
-        BookModel dummyBook = new BookModel("robots", "Robot");
-        bookModelList.add(dummyBook);
-        bookModelList.add(dummyBook);
+        bookModelList.add(new BookModel("Book No.1", "Author"));
+        bookModelList.add(new BookModel("Book No.2", "Author"));
         searchResultAdapter = new SearchResultAdapter(bookModelList);
         searchResultAdapter.setClickListener(this);
         searchResultRecyclerView.setAdapter(searchResultAdapter);

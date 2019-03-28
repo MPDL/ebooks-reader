@@ -1,6 +1,5 @@
 package de.mpg.mpdl.ebooksreader.common.adapter;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,12 +26,14 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
         public ImageView resultBookCoverImageView;
         public TextView resultBookTitleTextView;
         public TextView resultBookAuthorTextView;
+        public TextView autoIncrementTextView;
 
         public SearchResultViewHolder(View itemView) {
             super(itemView);
             resultBookCoverImageView = itemView.findViewById(R.id.resultBookCoverImageView);
             resultBookTitleTextView = itemView.findViewById(R.id.resultBookTitleTextView);
             resultBookAuthorTextView = itemView.findViewById(R.id.resultBookAuthorTextView);
+            autoIncrementTextView = itemView.findViewById(R.id.autoIncrementTextView);
             itemView.setOnClickListener(this);
         }
 
@@ -50,6 +51,7 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
 
     @Override
     public void onBindViewHolder(SearchResultViewHolder holder, int position) {
+        holder.autoIncrementTextView.setText("" + (position + 1) );
         holder.resultBookTitleTextView.setText(searchResults.get(position).getTitle());
         holder.resultBookAuthorTextView.setText(searchResults.get(position).getAuthor());
 
