@@ -1,24 +1,28 @@
 package de.mpg.mpdl.ebooksreader.activity.fragment;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import de.mpg.mpdl.ebooksreader.activity.BookDescriptionActivity;
 import de.mpg.mpdl.ebooksreader.activity.R;
+import de.mpg.mpdl.ebooksreader.common.adapter.SearchResultAdapter;
+import de.mpg.mpdl.ebooksreader.model.BookModel;
 
-public class SearchFragment extends Fragment {
+public class SearchFragment extends Fragment implements SearchResultAdapter.BookClickListener{
 
     ImageView backImageView;
     ImageView ebooksSearchImageView;
@@ -27,6 +31,7 @@ public class SearchFragment extends Fragment {
     SearchView ebooksSearchView;
     TextView searchHintTextView;
     RecyclerView searchResultRecyclerView;
+    SearchResultAdapter searchResultAdapter;
 
 
     public SearchFragment() {
@@ -88,15 +93,21 @@ public class SearchFragment extends Fragment {
             }
         });
 
-        ebooksDescriptionTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent bookDescriptionIntent = new Intent(getActivity(), BookDescriptionActivity.class);
-                startActivity(bookDescriptionIntent);
-            }
-        });
+
+        searchResultRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        List<BookModel> bookModelList = new ArrayList<>();
+        bookModelList.add(new BookModel("Book No.1", "Author"));
+        bookModelList.add(new BookModel("Book No.2", "Author"));
+        searchResultAdapter = new SearchResultAdapter(bookModelList);
+        searchResultAdapter.setClickListener(this);
+        searchResultRecyclerView.setAdapter(searchResultAdapter);
+
         super.onViewCreated(view, savedInstanceState);
+    }
 
-
+    @Override
+    public void onItemClick(View view, int position) {
+        Intent bookDescriptionIntent = new Intent(getActivity(), BookDescriptionActivity.class);
+        startActivity(bookDescriptionIntent);
     }
 }

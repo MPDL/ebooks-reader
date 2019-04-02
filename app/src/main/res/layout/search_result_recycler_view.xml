@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="116.5dp"
+    android:layout_marginHorizontal="8.5dp">
+
+    <ImageView
+        android:id="@+id/resultBookCoverImageView"
+        android:layout_width="76.5dp"
+        android:layout_height="108.5dp"
+        android:layout_marginStart="12.5dp"
+        android:layout_marginTop="4.5dp"
+        android:src="@drawable/ic_mupdf"
+        android:contentDescription="@string/desc_book_cover_image_view" />
+
+    <TextView
+        android:id="@+id/autoIncrementTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/resultBookCoverImageView"
+        android:layout_marginStart="20.5dp"
+        android:layout_marginTop="4.5dp"
+        android:gravity="center_vertical" />
+
+    <TextView
+        android:id="@+id/resultBookTitleTextView"
+        android:layout_width="match_parent"
+        android:layout_height="16.5dp"
+        android:layout_toEndOf="@id/resultBookCoverImageView"
+        android:layout_marginStart="20.5dp"
+        android:layout_marginEnd="12.5dp"
+        android:layout_below="@id/autoIncrementTextView"
+        android:layout_marginTop="4.5dp"
+        android:gravity="center_vertical" />
+
+    <TextView
+        android:id="@+id/resultBookAuthorTextView"
+        android:layout_width="match_parent"
+        android:layout_height="68.5dp"
+        android:layout_toEndOf="@id/resultBookCoverImageView"
+        android:layout_marginStart="20.5dp"
+        android:layout_marginEnd="12.5dp"
+        android:layout_below="@id/resultBookTitleTextView"
+        android:layout_marginTop="8.5dp" />
+
+</RelativeLayout>
