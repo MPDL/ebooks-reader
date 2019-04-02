@@ -30,9 +30,9 @@ public class MainActivity extends BaseCompatActivity {
         tabLayout = findViewById(R.id.tabLayout);
 
         tabAdapter = new TabAdapter(getSupportFragmentManager(), this);
-        tabAdapter.addFragment(new SearchFragment(), "search", R.drawable.ic_search);
-        tabAdapter.addFragment(new CollectionFragment(), "collection", R.drawable.ic_library);
-        tabAdapter.addFragment(new UserFragment(), "user", R.drawable.ic_user);
+        tabAdapter.addFragment(new SearchFragment(), "search", R.drawable.ic_search_square);
+        tabAdapter.addFragment(new CollectionFragment(), "collection", R.drawable.ic_library_square);
+        tabAdapter.addFragment(new UserFragment(), "user", R.drawable.ic_user_square);
 
         fragmentsViewPager.setAdapter(tabAdapter);
         tabLayout.setupWithViewPager(fragmentsViewPager);
