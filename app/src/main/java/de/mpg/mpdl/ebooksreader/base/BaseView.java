@@ -6,7 +6,6 @@ package de.mpg.mpdl.ebooksreader.base;
 
 public interface BaseView {
     void showLoading();
-    void showCustomisedLoading();
     void hideLoading();
     void onError(String msg);
     void onSuccess(String msg);

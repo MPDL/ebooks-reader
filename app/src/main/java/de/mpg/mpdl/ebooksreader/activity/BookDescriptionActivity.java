@@ -15,4 +15,5 @@ public class BookDescriptionActivity extends BaseCompatActivity {
     protected void initContentView(Bundle savedInstanceState) {
 
     }
+
 }

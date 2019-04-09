@@ -1,11 +1,13 @@
 package de.mpg.mpdl.ebooksreader.base;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import javax.inject.Inject;
 
-public abstract class BaseMvpActivity<T extends BasePresenter> extends BaseCompatActivity implements
-        BaseView{
+public abstract class BaseMvpFragment<T extends BasePresenter> extends BaseFragment implements BaseView {
 
     @Inject
     protected T mPresenter;
@@ -13,31 +15,31 @@ public abstract class BaseMvpActivity<T extends BasePresenter> extends BaseCompa
     protected abstract void injectComponent();
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         injectComponent();
-        super.onCreate(savedInstanceState);
+        return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
         mPresenter.resume();
     }
 
     @Override
-    protected void onPause() {
+    public void onPause() {
         super.onPause();
         mPresenter.pause();
     }
 
     @Override
-    protected void onStop() {
+    public void onStop() {
         super.onStop();
         mPresenter.stop();
     }
 
     @Override
-    protected void onDestroy() {
+    public void onDestroy() {
         super.onDestroy();
         mPresenter.destroy();
     }
@@ -57,4 +59,3 @@ public abstract class BaseMvpActivity<T extends BasePresenter> extends BaseCompa
 
     }
 }
-
