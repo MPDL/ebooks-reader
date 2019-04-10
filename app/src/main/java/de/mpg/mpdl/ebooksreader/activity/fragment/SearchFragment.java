@@ -6,7 +6,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -22,13 +21,15 @@ import de.mpg.mpdl.ebooksreader.base.BaseMvpFragment;
 import de.mpg.mpdl.ebooksreader.common.adapter.SearchResultAdapter;
 import de.mpg.mpdl.ebooksreader.injection.component.DaggerEbooksComponent;
 import de.mpg.mpdl.ebooksreader.injection.module.EbooksModule;
-import de.mpg.mpdl.ebooksreader.model.BookModel;
+import de.mpg.mpdl.ebooksreader.model.dto.DocDTO;
 import de.mpg.mpdl.ebooksreader.model.dto.QueryResponseDTO;
 import de.mpg.mpdl.ebooksreader.mvp.presenter.SearchFragmentPresenter;
 import de.mpg.mpdl.ebooksreader.mvp.view.SearchFragmentView;
 
 public class SearchFragment extends BaseMvpFragment<SearchFragmentPresenter> implements SearchFragmentView, SearchResultAdapter.BookClickListener{
 
+
+    private String HASH_CREDENTIAL = "";
     ImageView backImageView;
     ImageView ebooksSearchImageView;
     TextView ebooksDescriptionTextView;
@@ -38,6 +39,7 @@ public class SearchFragment extends BaseMvpFragment<SearchFragmentPresenter> imp
     RecyclerView searchResultRecyclerView;
     SearchResultAdapter searchResultAdapter;
 
+    List<DocDTO> searchResultList= new ArrayList<>();
 
     public SearchFragment() {
     }
@@ -105,15 +107,13 @@ public class SearchFragment extends BaseMvpFragment<SearchFragmentPresenter> imp
                 ebooksSearchView.setLayoutParams(params);
                 ebooksSearchView.setIconified(false);
 
+                mPresenter.selectDocs(HASH_CREDENTIAL, "on", "allfields:movies prodcode_str_mv:SBA OR prodcode_str_mv:Springer OR prodcode_str_mv:OAPEN", "json", (BaseActivity) getActivity());
             }
         });
 
 
         searchResultRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        List<BookModel> bookModelList = new ArrayList<>();
-        bookModelList.add(new BookModel("Book No.1", "Author"));
-        bookModelList.add(new BookModel("Book No.2", "Author"));
-        searchResultAdapter = new SearchResultAdapter(bookModelList);
+        searchResultAdapter = new SearchResultAdapter(searchResultList);
         searchResultAdapter.setClickListener(this);
         searchResultRecyclerView.setAdapter(searchResultAdapter);
         super.onViewCreated(view, savedInstanceState);
@@ -131,8 +131,8 @@ public class SearchFragment extends BaseMvpFragment<SearchFragmentPresenter> imp
 
     @Override
     public void successfulSelectDocs(QueryResponseDTO queryResponseDTO) {
-        String title = queryResponseDTO.getResponseContentDTO().getDocs().get(0).getTitle();
-        Log.e("successfulSelectDocs", title);
+        searchResultList.clear();
+        searchResultList.addAll(queryResponseDTO.getResponseContentDTO().getDocs());
     }
 
     @Override

@@ -10,15 +10,15 @@ import android.widget.TextView;
 import java.util.List;
 
 import de.mpg.mpdl.ebooksreader.activity.R;
-import de.mpg.mpdl.ebooksreader.model.BookModel;
+import de.mpg.mpdl.ebooksreader.model.dto.DocDTO;
 
 public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapter.SearchResultViewHolder> {
 
-    private List<BookModel> searchResults;
+    private List<DocDTO> searchResults;
     private BookClickListener mBookClickListener;
 
 
-    public SearchResultAdapter(List<BookModel> searchResults) {
+    public SearchResultAdapter(List<DocDTO> searchResults) {
         this.searchResults = searchResults;
     }
 
@@ -53,7 +53,7 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
     public void onBindViewHolder(SearchResultViewHolder holder, int position) {
         holder.autoIncrementTextView.setText("" + (position + 1) );
         holder.resultBookTitleTextView.setText(searchResults.get(position).getTitle());
-        holder.resultBookAuthorTextView.setText(searchResults.get(position).getAuthor());
+        holder.resultBookAuthorTextView.setText(searchResults.get(position).getAuthorList().get(0));
 
     }
 
@@ -62,7 +62,7 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
         return searchResults.size();
     }
 
-    public BookModel getItem(int position) {
+    public DocDTO getItem(int position) {
         return searchResults.get(position);
     }
 
