@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="92.5dp"
-        android:src="@drawable/ic_library"
+        android:src="@drawable/ic_library_square"
         android:tint="@color/colorPrimary"
         android:contentDescription="@string/desc_ebooks_search_image_view" />
 
@@ -23,7 +23,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginTop="24.5dp"
         android:layout_marginHorizontal="24.5dp"
-        android:src="@drawable/ic_back"
+        android:src="@drawable/ic_back_square"
         android:contentDescription="@string/desc_back_image_view"
         android:visibility="gone"/>
 
