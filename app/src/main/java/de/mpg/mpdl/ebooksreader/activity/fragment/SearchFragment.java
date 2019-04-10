@@ -3,13 +3,11 @@ package de.mpg.mpdl.ebooksreader.activity.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -19,10 +17,17 @@ import java.util.List;
 
 import de.mpg.mpdl.ebooksreader.activity.BookDescriptionActivity;
 import de.mpg.mpdl.ebooksreader.activity.R;
+import de.mpg.mpdl.ebooksreader.base.BaseActivity;
+import de.mpg.mpdl.ebooksreader.base.BaseMvpFragment;
 import de.mpg.mpdl.ebooksreader.common.adapter.SearchResultAdapter;
+import de.mpg.mpdl.ebooksreader.injection.component.DaggerEbooksComponent;
+import de.mpg.mpdl.ebooksreader.injection.module.EbooksModule;
 import de.mpg.mpdl.ebooksreader.model.BookModel;
+import de.mpg.mpdl.ebooksreader.model.dto.QueryResponseDTO;
+import de.mpg.mpdl.ebooksreader.mvp.presenter.SearchFragmentPresenter;
+import de.mpg.mpdl.ebooksreader.mvp.view.SearchFragmentView;
 
-public class SearchFragment extends Fragment implements SearchResultAdapter.BookClickListener{
+public class SearchFragment extends BaseMvpFragment<SearchFragmentPresenter> implements SearchFragmentView, SearchResultAdapter.BookClickListener{
 
     ImageView backImageView;
     ImageView ebooksSearchImageView;
@@ -38,13 +43,23 @@ public class SearchFragment extends Fragment implements SearchResultAdapter.Book
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_search, container, false);
+    protected void injectComponent() {
+        DaggerEbooksComponent.builder()
+                .applicationComponent(getApplicationComponent())
+                .ebooksModule(new EbooksModule())
+                .build()
+                .inject(this);
+
+        mPresenter.setView(this);
+    }
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.fragment_search;
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-
         backImageView = getActivity().findViewById(R.id.backImageView);
         ebooksSearchImageView = getActivity().findViewById(R.id.ebooksSearchImageView);
         searchResultRecyclerView = getActivity().findViewById(R.id.searchResultRecyclerView);
@@ -101,13 +116,27 @@ public class SearchFragment extends Fragment implements SearchResultAdapter.Book
         searchResultAdapter = new SearchResultAdapter(bookModelList);
         searchResultAdapter.setClickListener(this);
         searchResultRecyclerView.setAdapter(searchResultAdapter);
-
         super.onViewCreated(view, savedInstanceState);
+    }
+
+    @Override
+    protected void initContentView(Bundle savedInstanceState) {
     }
 
     @Override
     public void onItemClick(View view, int position) {
         Intent bookDescriptionIntent = new Intent(getActivity(), BookDescriptionActivity.class);
         startActivity(bookDescriptionIntent);
+    }
+
+    @Override
+    public void successfulSelectDocs(QueryResponseDTO queryResponseDTO) {
+        String title = queryResponseDTO.getResponseContentDTO().getDocs().get(0).getTitle();
+        Log.e("successfulSelectDocs", title);
+    }
+
+    @Override
+    public void failedSelectDocs(Throwable e) {
+
     }
 }

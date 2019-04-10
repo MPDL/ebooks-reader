@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 
 import de.mpg.mpdl.ebooksreader.activity.fragment.CollectionFragment;
 import de.mpg.mpdl.ebooksreader.activity.fragment.SearchFragment;
@@ -55,19 +54,6 @@ public class MainActivity extends BaseCompatActivity {
 
             }
         });
-
-
-        Log.e("px2dp","190:"+px2dip(getApplicationContext(), 190));
-        Log.e("px2dp","270:"+px2dip(getApplicationContext(), 270));
-        Log.e("px2dp","30:"+px2dip(getApplicationContext(), 30));
-        Log.e("px2dp","10:"+px2dip(getApplicationContext(), 10));
-        Log.e("px2dp","50:"+px2dip(getApplicationContext(), 50));
-        Log.e("px2dp","40:"+px2dip(getApplicationContext(), 40));
-        Log.e("px2dp","20:"+px2dip(getApplicationContext(), 20));
-        Log.e("px2dp","440:"+px2dip(getApplicationContext(), 440));
-        Log.e("px2dp","320:"+px2dip(getApplicationContext(), 320));
-        Log.e("px2dp","80:"+px2dip(getApplicationContext(), 80));
-
     }
 
     public float px2dip(Context context, float pxValue) {

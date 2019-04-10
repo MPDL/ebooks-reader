@@ -7,17 +7,17 @@
 
     <ImageView
         android:id="@+id/avatarImageView"
-        android:layout_width="300px"
-        android:layout_height="300px"
-        android:layout_marginTop="160px"
+        android:layout_width="120.5dp"
+        android:layout_height="120.5dp"
+        android:layout_marginTop="64.5dp"
         android:layout_centerHorizontal="true"
-        android:src="@drawable/ic_user_square"/>
+        android:src="@drawable/ic_user_square"
+        android:contentDescription="@string/desc_avatar_image_view"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_below="@+id/avatarImageView"
-        android:layout_marginTop="39px"/>
+        android:layout_below="@+id/avatarImageView" />
 
 </RelativeLayout>
