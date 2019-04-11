@@ -17,7 +17,7 @@ public class EbooksServiceImpl extends EbooksService {
     }
 
     @Override
-    public Observable<QueryResponseDTO> selectDocs(String credential, String indent, String q, String wt) {
-        return ebooksRepository.selectDocs(credential, indent, q, wt);
+    public Observable<QueryResponseDTO> selectDocs(String credential, String indent, String q, int start, String wt) {
+        return ebooksRepository.selectDocs(credential, indent, q, start, wt);
     }
 }

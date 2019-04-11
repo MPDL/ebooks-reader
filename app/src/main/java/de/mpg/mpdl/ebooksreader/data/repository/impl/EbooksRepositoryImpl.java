@@ -15,7 +15,7 @@ public class EbooksRepositoryImpl implements EbooksRepository {
     }
 
     @Override
-    public Observable<QueryResponseDTO> selectDocs(String credential, String indent, String q, String wt) {
-        return RetrofitFactory.getInstance().create(EbooksApi.class).selectDocs(credential, indent, q, wt);
+    public Observable<QueryResponseDTO> selectDocs(String credential, String indent, String q, int start, String wt) {
+        return RetrofitFactory.getInstance().create(EbooksApi.class).selectDocs(credential, indent, q, start, wt);
     }
 }

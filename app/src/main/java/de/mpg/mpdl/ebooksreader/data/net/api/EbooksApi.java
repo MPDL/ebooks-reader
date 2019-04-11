@@ -12,6 +12,7 @@ public interface EbooksApi {
             @Header("Authorization") String credential,
             @Query("indent") String indent,
             @Query("q")String q,
+            @Query("start")int start,
             @Query("wt")String json
     );
 }

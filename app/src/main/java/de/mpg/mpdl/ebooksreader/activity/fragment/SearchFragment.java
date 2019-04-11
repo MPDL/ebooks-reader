@@ -19,6 +19,8 @@ import de.mpg.mpdl.ebooksreader.activity.R;
 import de.mpg.mpdl.ebooksreader.base.BaseActivity;
 import de.mpg.mpdl.ebooksreader.base.BaseMvpFragment;
 import de.mpg.mpdl.ebooksreader.common.adapter.SearchResultAdapter;
+import de.mpg.mpdl.ebooksreader.common.adapter.interf.BookClickListener;
+import de.mpg.mpdl.ebooksreader.common.adapter.interf.OnLoadMoreListener;
 import de.mpg.mpdl.ebooksreader.injection.component.DaggerEbooksComponent;
 import de.mpg.mpdl.ebooksreader.injection.module.EbooksModule;
 import de.mpg.mpdl.ebooksreader.model.dto.DocDTO;
@@ -26,10 +28,12 @@ import de.mpg.mpdl.ebooksreader.model.dto.QueryResponseDTO;
 import de.mpg.mpdl.ebooksreader.mvp.presenter.SearchFragmentPresenter;
 import de.mpg.mpdl.ebooksreader.mvp.view.SearchFragmentView;
 
-public class SearchFragment extends BaseMvpFragment<SearchFragmentPresenter> implements SearchFragmentView, SearchResultAdapter.BookClickListener{
+public class SearchFragment extends BaseMvpFragment<SearchFragmentPresenter> implements SearchFragmentView, BookClickListener {
 
 
-    private String HASH_CREDENTIAL = "";
+    String HASH_CREDENTIAL = "";
+    String queryStr = "";
+    int index = 0;
     ImageView backImageView;
     ImageView ebooksSearchImageView;
     TextView ebooksDescriptionTextView;
@@ -107,15 +111,39 @@ public class SearchFragment extends BaseMvpFragment<SearchFragmentPresenter> imp
                 ebooksSearchView.setLayoutParams(params);
                 ebooksSearchView.setIconified(false);
 
-                mPresenter.selectDocs(HASH_CREDENTIAL, "on", "allfields:movies prodcode_str_mv:SBA OR prodcode_str_mv:Springer OR prodcode_str_mv:OAPEN", "json", (BaseActivity) getActivity());
+            }
+        });
+
+        ebooksSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                searchResultList.clear();
+                index = 0;
+                queryStr = query;
+                mPresenter.selectDocs(HASH_CREDENTIAL, "on", "allfields:"+ query +" prodcode_str_mv:SBA OR prodcode_str_mv:Springer OR prodcode_str_mv:OAPEN", index,"json", (BaseActivity) getActivity());
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
             }
         });
 
 
         searchResultRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        searchResultAdapter = new SearchResultAdapter(searchResultList);
+        searchResultAdapter = new SearchResultAdapter(searchResultRecyclerView, searchResultList);
         searchResultAdapter.setClickListener(this);
         searchResultRecyclerView.setAdapter(searchResultAdapter);
+        searchResultAdapter.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore() {
+                searchResultList.add(null);
+                searchResultAdapter.notifyItemInserted(searchResultList.size() - 1);
+                mPresenter.selectDocs(HASH_CREDENTIAL, "on", "allfields:"+ queryStr +" prodcode_str_mv:SBA OR prodcode_str_mv:Springer OR prodcode_str_mv:OAPEN", index,"json", (BaseActivity) getActivity());
+            }
+        });
+
         super.onViewCreated(view, savedInstanceState);
     }
 
@@ -131,8 +159,14 @@ public class SearchFragment extends BaseMvpFragment<SearchFragmentPresenter> imp
 
     @Override
     public void successfulSelectDocs(QueryResponseDTO queryResponseDTO) {
-        searchResultList.clear();
+        if(searchResultList.size() > 0) {
+            searchResultList.remove(searchResultList.size() - 1);
+        }
+        searchResultAdapter.notifyItemRemoved(searchResultList.size());
         searchResultList.addAll(queryResponseDTO.getResponseContentDTO().getDocs());
+        index += 10;
+        searchResultAdapter.notifyDataSetChanged();
+        searchResultAdapter.setLoaded();
     }
 
     @Override

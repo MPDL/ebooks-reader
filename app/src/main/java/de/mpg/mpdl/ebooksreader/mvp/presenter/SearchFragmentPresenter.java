@@ -18,11 +18,10 @@ public class SearchFragmentPresenter extends BaseAbstractPresenter<SearchFragmen
     public SearchFragmentPresenter() {
     }
 
-    public void selectDocs(String credential, String indent, String q, String wt, BaseActivity activity) {
+    public void selectDocs(String credential, String indent, String q, int start, String wt, BaseActivity activity) {
         if(!checkNetWork()){
             return;
         }
-        mView.showLoading();
 
         ebooksService.execute(new BaseSubscriber<QueryResponseDTO>(mView){
             @Override
@@ -40,7 +39,7 @@ public class SearchFragmentPresenter extends BaseAbstractPresenter<SearchFragmen
                     mView.failedSelectDocs(e);
                 }
             }
-        }, ebooksService.selectDocs(credential, indent, q, wt), activity);
+        }, ebooksService.selectDocs(credential, indent, q, start, wt), activity);
 
     }
 
