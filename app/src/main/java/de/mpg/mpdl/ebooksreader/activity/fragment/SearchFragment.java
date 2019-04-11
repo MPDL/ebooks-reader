@@ -6,6 +6,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -23,6 +24,7 @@ import de.mpg.mpdl.ebooksreader.common.adapter.interf.BookClickListener;
 import de.mpg.mpdl.ebooksreader.common.adapter.interf.OnLoadMoreListener;
 import de.mpg.mpdl.ebooksreader.injection.component.DaggerEbooksComponent;
 import de.mpg.mpdl.ebooksreader.injection.module.EbooksModule;
+import de.mpg.mpdl.ebooksreader.model.dto.BookCoverResponseDTO;
 import de.mpg.mpdl.ebooksreader.model.dto.DocDTO;
 import de.mpg.mpdl.ebooksreader.model.dto.QueryResponseDTO;
 import de.mpg.mpdl.ebooksreader.mvp.presenter.SearchFragmentPresenter;
@@ -164,6 +166,13 @@ public class SearchFragment extends BaseMvpFragment<SearchFragmentPresenter> imp
         }
         searchResultAdapter.notifyItemRemoved(searchResultList.size());
         searchResultList.addAll(queryResponseDTO.getResponseContentDTO().getDocs());
+
+        for (DocDTO docDTO : searchResultList) {
+            if (docDTO != null && docDTO.getIsbn() != null) {
+                mPresenter.getCover(docDTO.getIsbn().get(0), (BaseActivity) getActivity());
+            }
+        }
+
         index += 10;
         searchResultAdapter.notifyDataSetChanged();
         searchResultAdapter.setLoaded();
@@ -171,6 +180,19 @@ public class SearchFragment extends BaseMvpFragment<SearchFragmentPresenter> imp
 
     @Override
     public void failedSelectDocs(Throwable e) {
+        //TODO: error message
+    }
 
+    @Override
+    public void successfulGetCover(BookCoverResponseDTO bookCoverResponseDTO, String isbn) {
+        for (DocDTO docDTO : searchResultList) {
+            if (docDTO != null && docDTO.getIsbn() != null && docDTO.getIsbn().get(0).equalsIgnoreCase(isbn)) {
+                docDTO.setTitle(bookCoverResponseDTO.getBookCoverItemDTOS().get(0).getVolumeInfoDTO().getImageLinksDTO().getSmallThumbnail());
+            }
+        }
+    }
+
+    @Override
+    public void failedGetCover(Throwable e) {
     }
 }

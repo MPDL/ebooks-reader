@@ -15,17 +15,23 @@ public class DocDTO {
     @SerializedName("url")
     List<String> urls;
     String description;
+    @SerializedName("isbn")
+    List<String> isbn;
+
+    String coverUrl;
 
     public DocDTO() {
     }
 
-    public DocDTO(String id, String title, List<String> authorList, String urlPdfStr, List<String> urls, String description) {
+    public DocDTO(String id, String title, List<String> authorList, String urlPdfStr, List<String> urls, String description, List<String> isbn, String coverUrl) {
         this.id = id;
         this.title = title;
         this.authorList = authorList;
         this.urlPdfStr = urlPdfStr;
         this.urls = urls;
         this.description = description;
+        this.isbn = isbn;
+        this.coverUrl = coverUrl;
     }
 
     public String getId() {
@@ -74,5 +80,21 @@ public class DocDTO {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public List<String> getIsbn() {
+        return isbn;
+    }
+
+    public void setIsbn(List<String> isbn) {
+        this.isbn = isbn;
+    }
+
+    public String getCoverUrl() {
+        return coverUrl;
+    }
+
+    public void setCoverUrl(String coverUrl) {
+        this.coverUrl = coverUrl;
     }
 }

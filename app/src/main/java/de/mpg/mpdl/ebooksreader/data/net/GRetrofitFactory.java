@@ -14,17 +14,17 @@ import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 
-public class RetrofitFactory {
+public class GRetrofitFactory {
 
-    public static String BASE_URL_SOLR = "https://ebooks4-qa.mpdl.mpg.de/";
+    public static String BASE_URL_GOOGLE = "https://www.googleapis.com/";
 
-    private static volatile RetrofitFactory sInstance;
+    private static volatile GRetrofitFactory sInstance;
 
     private Retrofit retrofit;
 
-    private RetrofitFactory() {
+    private GRetrofitFactory() {
         retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL_SOLR)
+                .baseUrl(BASE_URL_GOOGLE)
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
@@ -33,11 +33,11 @@ public class RetrofitFactory {
 
     }
 
-    public static RetrofitFactory getInstance() {
+    public static GRetrofitFactory getInstance() {
         if (null == sInstance) {
-            synchronized (RetrofitFactory.class) {
+            synchronized (GRetrofitFactory.class) {
                 if (null == sInstance) {
-                    sInstance = new RetrofitFactory();
+                    sInstance = new GRetrofitFactory();
                 }
             }
         }

@@ -4,6 +4,7 @@ import javax.inject.Inject;
 
 import de.mpg.mpdl.ebooksreader.data.repository.EbooksRepository;
 import de.mpg.mpdl.ebooksreader.data.service.EbooksService;
+import de.mpg.mpdl.ebooksreader.model.dto.BookCoverResponseDTO;
 import de.mpg.mpdl.ebooksreader.model.dto.QueryResponseDTO;
 import rx.Observable;
 
@@ -19,5 +20,10 @@ public class EbooksServiceImpl extends EbooksService {
     @Override
     public Observable<QueryResponseDTO> selectDocs(String credential, String indent, String q, int start, String wt) {
         return ebooksRepository.selectDocs(credential, indent, q, start, wt);
+    }
+
+    @Override
+    public Observable<BookCoverResponseDTO> getCover(String isbn) {
+        return ebooksRepository.getCover(isbn);
     }
 }
