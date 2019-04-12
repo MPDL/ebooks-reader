@@ -6,7 +6,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -170,6 +169,7 @@ public class SearchFragment extends BaseMvpFragment<SearchFragmentPresenter> imp
         for (DocDTO docDTO : searchResultList) {
             if (docDTO != null && docDTO.getIsbn() != null) {
                 mPresenter.getCover(docDTO.getIsbn().get(0), (BaseActivity) getActivity());
+                break;
             }
         }
 
@@ -187,9 +187,10 @@ public class SearchFragment extends BaseMvpFragment<SearchFragmentPresenter> imp
     public void successfulGetCover(BookCoverResponseDTO bookCoverResponseDTO, String isbn) {
         for (DocDTO docDTO : searchResultList) {
             if (docDTO != null && docDTO.getIsbn() != null && docDTO.getIsbn().get(0).equalsIgnoreCase(isbn)) {
-                docDTO.setTitle(bookCoverResponseDTO.getBookCoverItemDTOS().get(0).getVolumeInfoDTO().getImageLinksDTO().getSmallThumbnail());
+                docDTO.setCoverUrl(bookCoverResponseDTO.getBookCoverItemDTOS().get(0).getVolumeInfoDTO().getImageLinksDTO().getSmallThumbnail());
             }
         }
+        searchResultAdapter.notifyDataSetChanged();
     }
 
     @Override

@@ -14,6 +14,7 @@ import java.util.List;
 import de.mpg.mpdl.ebooksreader.activity.R;
 import de.mpg.mpdl.ebooksreader.common.adapter.interf.BookClickListener;
 import de.mpg.mpdl.ebooksreader.common.adapter.interf.OnLoadMoreListener;
+import de.mpg.mpdl.ebooksreader.injection.module.glide.ImageLoader;
 import de.mpg.mpdl.ebooksreader.model.dto.DocDTO;
 
 public class SearchResultAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -101,6 +102,9 @@ public class SearchResultAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 searchResultViewHolder.resultBookTitleTextView.setText(searchResults.get(position).getTitle());
                 if (searchResults.get(position).getAuthorList() != null) {
                     searchResultViewHolder.resultBookAuthorTextView.setText(searchResults.get(position).getAuthorList().get(0));
+                }
+                if (searchResults.get(position).getCoverUrl() != null) {
+                    ImageLoader.loadStringRes(searchResultViewHolder.resultBookCoverImageView, searchResults.get(position).getCoverUrl(), ImageLoader.defConfig, null);
                 }
                 break;
             case 1:

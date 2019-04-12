@@ -22,6 +22,8 @@ dependencies {
     implementation 'com.trello:rxlifecycle-android:1.0'
     implementation 'com.trello:rxlifecycle-components:1.0'
     implementation 'com.android.support:recyclerview-v7:26.+'
+    implementation 'com.github.bumptech.glide:glide:3.7.0'
+    implementation 'jp.wasabeef:glide-transformations:2.0.1'
     if (file('../lib/build.gradle').isFile())
         api project(':lib')
     else
