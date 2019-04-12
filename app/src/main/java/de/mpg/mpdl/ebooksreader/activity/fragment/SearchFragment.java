@@ -28,6 +28,7 @@ import de.mpg.mpdl.ebooksreader.model.dto.DocDTO;
 import de.mpg.mpdl.ebooksreader.model.dto.QueryResponseDTO;
 import de.mpg.mpdl.ebooksreader.mvp.presenter.SearchFragmentPresenter;
 import de.mpg.mpdl.ebooksreader.mvp.view.SearchFragmentView;
+import de.mpg.mpdl.ebooksreader.utils.PropertiesReader;
 
 public class SearchFragment extends BaseMvpFragment<SearchFragmentPresenter> implements SearchFragmentView, BookClickListener {
 
@@ -150,6 +151,8 @@ public class SearchFragment extends BaseMvpFragment<SearchFragmentPresenter> imp
 
     @Override
     protected void initContentView(Bundle savedInstanceState) {
+        PropertiesReader propertiesReader = new PropertiesReader(getActivity());
+        HASH_CREDENTIAL = propertiesReader.getEBooksProperties().getProperty("credential");
     }
 
     @Override
