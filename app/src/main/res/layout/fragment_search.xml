@@ -8,12 +8,11 @@
 
     <ImageView
         android:id="@+id/ebooksSearchImageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="192dp"
+        android:layout_height="72dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="92.5dp"
-        android:src="@drawable/ic_library_square"
-        android:tint="@color/colorPrimary"
+        android:src="@drawable/ic_ebooks"
         android:contentDescription="@string/desc_ebooks_search_image_view" />
 
     <ImageView

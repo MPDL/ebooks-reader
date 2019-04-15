@@ -9,7 +9,7 @@
 
     <application
         android:name="de.mpg.mpdl.ebooksreader.EbooksReaderApp"
-        android:icon="@drawable/ic_mupdf"
+        android:icon="@drawable/ic_favicon"
         android:label="Ebooks Reader"
         android:theme="@style/AppTheme">
         <activity android:name=".BookDescriptionActivity" />

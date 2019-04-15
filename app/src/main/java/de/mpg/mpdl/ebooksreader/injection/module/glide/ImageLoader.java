@@ -33,7 +33,7 @@ public class ImageLoader {
     public static ImageLoadConfig defConfig = new ImageLoadConfig.Builder().
             setCropType(ImageLoadConfig.CENTER_CROP).
             setAsBitmap(true).
-            setPlaceHolderResId(R.drawable.ic_mupdf).
+            setPlaceHolderResId(R.drawable.ic_favicon).
 //            setErrorResId(R.drawable.bg_error).
             setDiskCacheStrategy(ImageLoadConfig.DiskCache.SOURCE).
             setPrioriy(ImageLoadConfig.LoadPriority.HIGH).build();
