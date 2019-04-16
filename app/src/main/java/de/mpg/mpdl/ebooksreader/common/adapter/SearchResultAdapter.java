@@ -64,6 +64,8 @@ public class SearchResultAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         public TextView resultBookTitleTextView;
         public TextView resultBookAuthorTextView;
         public TextView autoIncrementTextView;
+        public TextView resultBookPublishDateTextView;
+        public TextView resultBookPublisherTextView;
 
         public SearchResultViewHolder(View itemView) {
             super(itemView);
@@ -71,6 +73,8 @@ public class SearchResultAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             resultBookTitleTextView = itemView.findViewById(R.id.resultBookTitleTextView);
             resultBookAuthorTextView = itemView.findViewById(R.id.resultBookAuthorTextView);
             autoIncrementTextView = itemView.findViewById(R.id.autoIncrementTextView);
+            resultBookPublishDateTextView = itemView.findViewById(R.id.resultBookPublishDateTextView);
+            resultBookPublisherTextView = itemView.findViewById(R.id.resultBookPublisherTextView);
             itemView.setOnClickListener(this);
         }
 
@@ -100,11 +104,29 @@ public class SearchResultAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 SearchResultViewHolder searchResultViewHolder = (SearchResultViewHolder) holder;
                 searchResultViewHolder.autoIncrementTextView.setText("" + (position + 1) );
                 searchResultViewHolder.resultBookTitleTextView.setText(searchResults.get(position).getTitle());
-                if (searchResults.get(position).getAuthorList() != null) {
+                if (null != searchResults.get(position).getAuthorList() && searchResults.get(position).getAuthorList().size() > 0) {
                     searchResultViewHolder.resultBookAuthorTextView.setText(searchResults.get(position).getAuthorList().get(0));
+                } else {
+                    searchResultViewHolder.resultBookAuthorTextView.setText("");
                 }
-                if (searchResults.get(position).getCoverUrl() != null) {
+
+                String imgUrl = searchResults.get(position).getCoverUrl();
+                if (null != imgUrl && null != searchResultViewHolder && !imgUrl.equalsIgnoreCase("")) {
                     ImageLoader.loadStringRes(searchResultViewHolder.resultBookCoverImageView, searchResults.get(position).getCoverUrl(), ImageLoader.defConfig, null);
+                } else {
+                    ImageLoader.loadResId(searchResultViewHolder.resultBookCoverImageView, R.drawable.ic_favicon, ImageLoader.defConfig, null);
+                }
+
+                if (null != searchResults.get(position).getPublishDate() && searchResults.get(position).getPublishDate().size() > 0) {
+                    searchResultViewHolder.resultBookPublishDateTextView.setText(searchResults.get(position).getPublishDate().get(0));
+                } else {
+                    searchResultViewHolder.resultBookPublishDateTextView.setText("");
+                }
+
+                if (null != searchResults.get(position).getPublisher() && searchResults.get(position).getPublisher().size() > 0) {
+                    searchResultViewHolder.resultBookPublisherTextView.setText(searchResults.get(position).getPublisher().get(0));
+                } else {
+                    searchResultViewHolder.resultBookPublisherTextView.setText("");
                 }
                 break;
             case 1:
@@ -113,6 +135,7 @@ public class SearchResultAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 break;
         }
     }
+
 
     @Override
     public int getItemViewType(int position) {

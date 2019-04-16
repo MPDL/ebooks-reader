@@ -2,6 +2,7 @@ package de.mpg.mpdl.ebooksreader.activity.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.TabLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -112,7 +113,7 @@ public class SearchFragment extends BaseMvpFragment<SearchFragmentPresenter> imp
                 params.setMargins(params.leftMargin, 210, params.rightMargin, params.bottomMargin);
                 ebooksSearchView.setLayoutParams(params);
                 ebooksSearchView.setIconified(false);
-
+                searchResultList.clear();
             }
         });
 
@@ -128,6 +129,7 @@ public class SearchFragment extends BaseMvpFragment<SearchFragmentPresenter> imp
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                if(newText.equalsIgnoreCase("")) searchResultList.clear();
                 return false;
             }
         });
@@ -141,8 +143,19 @@ public class SearchFragment extends BaseMvpFragment<SearchFragmentPresenter> imp
             @Override
             public void onLoadMore() {
                 searchResultList.add(null);
-                searchResultAdapter.notifyItemInserted(searchResultList.size() - 1);
-                mPresenter.selectDocs(HASH_CREDENTIAL, "on", "allfields:"+ queryStr +" prodcode_str_mv:SBA OR prodcode_str_mv:Springer OR prodcode_str_mv:OAPEN", index,"json", (BaseActivity) getActivity());
+                searchResultAdapter.notifyDataSetChanged();
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(index <= 49) {
+                            mPresenter.selectDocs(HASH_CREDENTIAL, "on", "allfields:" + queryStr + " prodcode_str_mv:SBA OR prodcode_str_mv:Springer OR prodcode_str_mv:OAPEN", index, "json", (BaseActivity) getActivity());
+                        }else if(searchResultList.size() > 0) {
+                            searchResultList.remove(searchResultList.size() - 1);
+                            searchResultAdapter.notifyItemRemoved(searchResultList.size());
+                        }
+                    }
+                }, 2000);
             }
         });
 
@@ -167,13 +180,20 @@ public class SearchFragment extends BaseMvpFragment<SearchFragmentPresenter> imp
             searchResultList.remove(searchResultList.size() - 1);
         }
         searchResultAdapter.notifyItemRemoved(searchResultList.size());
-        searchResultList.addAll(queryResponseDTO.getResponseContentDTO().getDocs());
+        List<DocDTO> moreDocDTOs = queryResponseDTO.getResponseContentDTO().getDocs();
+        searchResultList.addAll(moreDocDTOs);
 
-        for (DocDTO docDTO : searchResultList) {
-            if (docDTO != null && docDTO.getIsbn() != null) {
-                mPresenter.getCover(docDTO.getIsbn().get(0), (BaseActivity) getActivity());
-                break;
-            }
+        Handler mHandler = new Handler();
+        for (int i = 0; i < moreDocDTOs.size(); i++) {
+            final DocDTO docDTO = moreDocDTOs.get(i);
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (docDTO != null && docDTO.getIsbn() != null) {
+                        mPresenter.getCover(docDTO.getIsbn().get(0), (BaseActivity) getActivity());
+                    }
+                }
+            }, 1000 * i);
         }
 
         index += 10;
@@ -191,6 +211,7 @@ public class SearchFragment extends BaseMvpFragment<SearchFragmentPresenter> imp
         for (DocDTO docDTO : searchResultList) {
             if (docDTO != null && docDTO.getIsbn() != null && docDTO.getIsbn().get(0).equalsIgnoreCase(isbn)) {
                 docDTO.setCoverUrl(bookCoverResponseDTO.getBookCoverItemDTOS().get(0).getVolumeInfoDTO().getImageLinksDTO().getSmallThumbnail());
+                break;
             }
         }
         searchResultAdapter.notifyDataSetChanged();

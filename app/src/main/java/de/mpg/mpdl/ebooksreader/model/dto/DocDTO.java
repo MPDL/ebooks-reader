@@ -17,13 +17,15 @@ public class DocDTO {
     String description;
     @SerializedName("isbn")
     List<String> isbn;
+    List<String> publishDate;
+    List<String> publisher;
 
     String coverUrl;
 
     public DocDTO() {
     }
 
-    public DocDTO(String id, String title, List<String> authorList, String urlPdfStr, List<String> urls, String description, List<String> isbn, String coverUrl) {
+    public DocDTO(String id, String title, List<String> authorList, String urlPdfStr, List<String> urls, String description, List<String> isbn, List<String> publishDate, List<String> publisher, String coverUrl) {
         this.id = id;
         this.title = title;
         this.authorList = authorList;
@@ -31,6 +33,8 @@ public class DocDTO {
         this.urls = urls;
         this.description = description;
         this.isbn = isbn;
+        this.publishDate = publishDate;
+        this.publisher = publisher;
         this.coverUrl = coverUrl;
     }
 
@@ -96,5 +100,21 @@ public class DocDTO {
 
     public void setCoverUrl(String coverUrl) {
         this.coverUrl = coverUrl;
+    }
+
+    public List<String> getPublishDate() {
+        return publishDate;
+    }
+
+    public void setPublishDate(List<String> publishDate) {
+        this.publishDate = publishDate;
+    }
+
+    public List<String> getPublisher() {
+        return publisher;
+    }
+
+    public void setPublisher(List<String> publisher) {
+        this.publisher = publisher;
     }
 }

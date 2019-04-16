@@ -34,7 +34,7 @@ public class ImageLoader {
             setCropType(ImageLoadConfig.CENTER_CROP).
             setAsBitmap(true).
             setPlaceHolderResId(R.drawable.ic_favicon).
-//            setErrorResId(R.drawable.bg_error).
+            setErrorResId(R.drawable.ic_favicon).
             setDiskCacheStrategy(ImageLoadConfig.DiskCache.SOURCE).
             setPrioriy(ImageLoadConfig.LoadPriority.HIGH).build();
 
