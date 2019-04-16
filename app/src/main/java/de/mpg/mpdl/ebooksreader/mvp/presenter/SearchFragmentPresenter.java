@@ -6,7 +6,6 @@ import de.mpg.mpdl.ebooksreader.base.BaseAbstractPresenter;
 import de.mpg.mpdl.ebooksreader.base.BaseActivity;
 import de.mpg.mpdl.ebooksreader.base.BaseSubscriber;
 import de.mpg.mpdl.ebooksreader.data.service.EbooksService;
-import de.mpg.mpdl.ebooksreader.model.dto.BookCoverResponseDTO;
 import de.mpg.mpdl.ebooksreader.model.dto.QueryResponseDTO;
 import de.mpg.mpdl.ebooksreader.mvp.view.SearchFragmentView;
 
@@ -43,29 +42,4 @@ public class SearchFragmentPresenter extends BaseAbstractPresenter<SearchFragmen
         }, ebooksService.selectDocs(credential, indent, q, start, wt), activity);
 
     }
-
-    public void getCover(final String isbn, BaseActivity activity) {
-        if(!checkNetWork()){
-            return;
-        }
-
-        ebooksService.execute(new BaseSubscriber<BookCoverResponseDTO>(mView){
-            @Override
-            public void onNext(BookCoverResponseDTO bookCoverResponseDTO) {
-                super.onNext(bookCoverResponseDTO);
-                if (mView != null) {
-                    mView.successfulGetCover(bookCoverResponseDTO, isbn);
-                }
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                super.onError(e);
-                if (mView != null) {
-                    mView.failedGetCover(e);
-                }
-            }
-        }, ebooksService.getCover(isbn), activity);
-    }
-
 }

@@ -24,7 +24,6 @@ import de.mpg.mpdl.ebooksreader.common.adapter.interf.BookClickListener;
 import de.mpg.mpdl.ebooksreader.common.adapter.interf.OnLoadMoreListener;
 import de.mpg.mpdl.ebooksreader.injection.component.DaggerEbooksComponent;
 import de.mpg.mpdl.ebooksreader.injection.module.EbooksModule;
-import de.mpg.mpdl.ebooksreader.model.dto.BookCoverResponseDTO;
 import de.mpg.mpdl.ebooksreader.model.dto.DocDTO;
 import de.mpg.mpdl.ebooksreader.model.dto.QueryResponseDTO;
 import de.mpg.mpdl.ebooksreader.mvp.presenter.SearchFragmentPresenter;
@@ -143,20 +142,9 @@ public class SearchFragment extends BaseMvpFragment<SearchFragmentPresenter> imp
         searchResultAdapter.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore() {
-                searchResultList.add(null);
-                searchResultAdapter.notifyDataSetChanged();
-
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        if(index <= 49) {
-                            mPresenter.selectDocs(HASH_CREDENTIAL, "on", "allfields:" + queryStr + " prodcode_str_mv:SBA OR prodcode_str_mv:Springer OR prodcode_str_mv:OAPEN", index, "json", (BaseActivity) getActivity());
-                        }else if(searchResultList.size() > 0) {
-                            searchResultList.remove(searchResultList.size() - 1);
-                            searchResultAdapter.notifyItemRemoved(searchResultList.size());
-                        }
-                    }
-                }, 2000);
+                if(index <= 49) {
+                    mPresenter.selectDocs(HASH_CREDENTIAL, "on", "allfields:" + queryStr + " prodcode_str_mv:SBA OR prodcode_str_mv:Springer OR prodcode_str_mv:OAPEN", index, "json", (BaseActivity) getActivity());
+                }
             }
         });
 
@@ -181,25 +169,15 @@ public class SearchFragment extends BaseMvpFragment<SearchFragmentPresenter> imp
 
     @Override
     public void successfulSelectDocs(QueryResponseDTO queryResponseDTO) {
-        if(searchResultList.size() > 0) {
-            searchResultList.remove(searchResultList.size() - 1);
-        }
         searchResultAdapter.notifyItemRemoved(searchResultList.size());
         List<DocDTO> moreDocDTOs = queryResponseDTO.getResponseContentDTO().getDocs();
-        searchResultList.addAll(moreDocDTOs);
-
-        Handler mHandler = new Handler();
-        for (int i = 0; i < moreDocDTOs.size(); i++) {
-            final DocDTO docDTO = moreDocDTOs.get(i);
-            mHandler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    if (docDTO != null && docDTO.getIsbn() != null) {
-                        mPresenter.getCover(docDTO.getIsbn().get(0), (BaseActivity) getActivity());
-                    }
-                }
-            }, 1000 * i);
+        for (DocDTO docDTO : moreDocDTOs) {
+            if (docDTO != null && docDTO.getIsbn() != null) {
+                docDTO.setCoverUrl("https://ebooks4-qa.mpdl.mpg.de/ebooks/Cover/Show?size=small&isbn=" + docDTO.getIsbn().get(0));
+            }
         }
+
+        searchResultList.addAll(moreDocDTOs);
 
         index += 10;
         searchResultAdapter.notifyDataSetChanged();
@@ -209,20 +187,5 @@ public class SearchFragment extends BaseMvpFragment<SearchFragmentPresenter> imp
     @Override
     public void failedSelectDocs(Throwable e) {
         //TODO: error message
-    }
-
-    @Override
-    public void successfulGetCover(BookCoverResponseDTO bookCoverResponseDTO, String isbn) {
-        for (DocDTO docDTO : searchResultList) {
-            if (docDTO != null && docDTO.getIsbn() != null && docDTO.getIsbn().get(0).equalsIgnoreCase(isbn)) {
-                docDTO.setCoverUrl(bookCoverResponseDTO.getBookCoverItemDTOS().get(0).getVolumeInfoDTO().getImageLinksDTO().getSmallThumbnail());
-                break;
-            }
-        }
-        searchResultAdapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void failedGetCover(Throwable e) {
     }
 }

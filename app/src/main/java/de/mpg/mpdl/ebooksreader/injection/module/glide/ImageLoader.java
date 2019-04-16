@@ -31,10 +31,10 @@ import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 public class ImageLoader {
 
     public static ImageLoadConfig defConfig = new ImageLoadConfig.Builder().
-            setCropType(ImageLoadConfig.CENTER_CROP).
+            setCropType(ImageLoadConfig.FIT_CENTER).
             setAsBitmap(true).
-            setPlaceHolderResId(R.drawable.ic_favicon).
-            setErrorResId(R.drawable.ic_favicon).
+            setPlaceHolderResId(R.drawable.ic_open_book).
+            setErrorResId(R.drawable.ic_open_book).
             setDiskCacheStrategy(ImageLoadConfig.DiskCache.SOURCE).
             setPrioriy(ImageLoadConfig.LoadPriority.HIGH).build();
 

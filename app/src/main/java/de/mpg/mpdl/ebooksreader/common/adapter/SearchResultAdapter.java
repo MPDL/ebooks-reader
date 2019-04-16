@@ -14,6 +14,7 @@ import java.util.List;
 import de.mpg.mpdl.ebooksreader.activity.R;
 import de.mpg.mpdl.ebooksreader.common.adapter.interf.BookClickListener;
 import de.mpg.mpdl.ebooksreader.common.adapter.interf.OnLoadMoreListener;
+import de.mpg.mpdl.ebooksreader.injection.module.glide.ImageLoadConfig;
 import de.mpg.mpdl.ebooksreader.injection.module.glide.ImageLoader;
 import de.mpg.mpdl.ebooksreader.model.dto.DocDTO;
 
@@ -114,7 +115,7 @@ public class SearchResultAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 if (null != imgUrl && null != searchResultViewHolder && !imgUrl.equalsIgnoreCase("")) {
                     ImageLoader.loadStringRes(searchResultViewHolder.resultBookCoverImageView, searchResults.get(position).getCoverUrl(), ImageLoader.defConfig, null);
                 } else {
-                    ImageLoader.loadResId(searchResultViewHolder.resultBookCoverImageView, R.drawable.ic_favicon, ImageLoader.defConfig, null);
+                    ImageLoader.loadResId(searchResultViewHolder.resultBookCoverImageView, R.drawable.ic_open_book, ImageLoader.defConfig,null);
                 }
 
                 if (null != searchResults.get(position).getPublishDate() && searchResults.get(position).getPublishDate().size() > 0) {
