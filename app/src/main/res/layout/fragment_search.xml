@@ -16,7 +16,7 @@
         android:contentDescription="@string/desc_ebooks_search_image_view" />
 
     <ImageView
-        android:id="@+id/backImageView"
+        android:id="@+id/detailBackImageView"
         android:layout_height="24.5dp"
         android:layout_width="24.5dp"
         android:layout_alignParentTop="true"

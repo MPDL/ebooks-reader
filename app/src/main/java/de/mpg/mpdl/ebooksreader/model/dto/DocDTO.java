@@ -8,6 +8,8 @@ public class DocDTO {
 
     String id;
     String title;
+    @SerializedName("title_sub")
+    String subTitle;
     @SerializedName("author")
     List<String> authorList;
     @SerializedName("urlPdf_str")
@@ -25,9 +27,10 @@ public class DocDTO {
     public DocDTO() {
     }
 
-    public DocDTO(String id, String title, List<String> authorList, String urlPdfStr, List<String> urls, String description, List<String> isbn, List<String> publishDate, List<String> publisher, String coverUrl) {
+    public DocDTO(String id, String title, String subTitle, List<String> authorList, String urlPdfStr, List<String> urls, String description, List<String> isbn, List<String> publishDate, List<String> publisher, String coverUrl) {
         this.id = id;
         this.title = title;
+        this.subTitle = subTitle;
         this.authorList = authorList;
         this.urlPdfStr = urlPdfStr;
         this.urls = urls;
@@ -52,6 +55,14 @@ public class DocDTO {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getSubTitle() {
+        return subTitle;
+    }
+
+    public void setSubTitle(String subTitle) {
+        this.subTitle = subTitle;
     }
 
     public List<String> getAuthorList() {

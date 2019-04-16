@@ -7,12 +7,12 @@
     tools:context="de.mpg.mpdl.ebooksreader.activity.BookDescriptionActivity">
 
     <ImageView
-        android:id="@+id/backImageView"
+        android:id="@+id/detailBackImageView"
         android:layout_height="24.5dp"
         android:layout_width="24.5dp"
         android:layout_marginTop="24.5dp"
         android:layout_marginHorizontal="24.5dp"
-        android:src="@drawable/ic_favicon"
+        android:src="@drawable/ic_back_square"
         android:contentDescription="@string/desc_back_image_view"/>
 
     <Button
@@ -41,7 +41,7 @@
             android:layout_height="wrap_content">
 
             <ImageView
-                android:id="@+id/coverImageView"
+                android:id="@+id/detailCoverImageView"
                 android:layout_width="144.5dp"
                 android:layout_height="204.5dp"
                 android:layout_marginTop="24.5dp"
@@ -49,68 +49,88 @@
                 android:src="@drawable/ic_favicon"/>
             
             <TextView
-                android:id="@+id/introductionTextView"
+                android:id="@+id/detailAbstractLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="24.5dp"
                 android:layout_marginStart="20.5dp"
-                android:layout_below="@id/coverImageView"
+                android:layout_below="@id/detailCoverImageView"
                 android:layout_marginTop="28.5dp"
                 android:text="@string/introduction"
                 android:textStyle="bold"
-                android:textSize="20sp"/>
+                android:textSize="20sp" />
             
             <TextView
+                android:id="@+id/detailAbstractTextView"
                 android:layout_width="568.5dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20.5dp"
-                android:layout_below="@id/introductionTextView"
+                android:layout_below="@id/detailAbstractLabel"
                 android:layout_marginTop="12.5dp"
                 android:text="@string/introduction_content"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
 
             <TextView
-                android:id="@+id/booknameTextView"
+                android:id="@+id/detailTitleTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toEndOf="@id/coverImageView"
+                android:layout_toEndOf="@id/detailCoverImageView"
                 android:layout_marginStart="20.5dp"
                 android:layout_marginTop="24.5dp"
                 android:text="@string/bookname"
                 android:textSize="28sp"
-                android:textStyle="bold"/>
+                android:textStyle="bold"
+                android:maxLines="2"/>
 
             <TextView
-                android:id="@+id/summaryTextView"
+                android:id="@+id/detailSubtitleTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toEndOf="@id/coverImageView"
+                android:layout_toEndOf="@id/detailCoverImageView"
                 android:layout_marginStart="20.5dp"
-                android:layout_below="@id/booknameTextView"
+                android:layout_below="@id/detailTitleTextView"
                 android:layout_marginTop="8.5dp"
                 android:text="@string/book_summary"
                 android:textSize="13sp"/>
 
             <TextView
-                android:id="@+id/authorTextView"
+                android:id="@+id/detailAuthorLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="20.5dp"
-                android:layout_toEndOf="@id/coverImageView"
+                android:layout_toEndOf="@id/detailCoverImageView"
                 android:layout_marginStart="20.5dp"
-                android:layout_below="@id/summaryTextView"
+                android:layout_below="@id/detailSubtitleTextView"
                 android:layout_marginTop="32.5dp"
                 android:text="@string/author"
                 android:textSize="14sp"
                 android:textStyle="bold"/>
 
             <TextView
+                android:id="@+id/detailAuthorTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="20.5dp"
-                android:layout_toEndOf="@id/authorTextView"
+                android:layout_toEndOf="@id/detailAuthorLabel"
                 android:layout_marginStart="20.5dp"
-                android:layout_below="@id/summaryTextView"
+                android:layout_below="@id/detailSubtitleTextView"
                 android:layout_marginTop="32.5dp"
                 android:text="@string/author_name"
                 android:textSize="14sp"/>
+
+            <TextView
+                android:id="@+id/detailPublishDateTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="20.5dp"
+                android:layout_toEndOf="@id/detailCoverImageView"
+                android:layout_below="@id/detailAuthorLabel"
+                android:layout_marginStart="20.5dp" />
+
+            <TextView
+                android:id="@+id/detailPublisherTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="20.5dp"
+                android:layout_toEndOf="@id/detailCoverImageView"
+                android:layout_below="@id/detailPublishDateTextView"
+                android:layout_marginStart="20.5dp" />
+
         </RelativeLayout>
     </ScrollView>
 

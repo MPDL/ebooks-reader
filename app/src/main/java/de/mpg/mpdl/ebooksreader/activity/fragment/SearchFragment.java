@@ -29,6 +29,7 @@ import de.mpg.mpdl.ebooksreader.model.dto.DocDTO;
 import de.mpg.mpdl.ebooksreader.model.dto.QueryResponseDTO;
 import de.mpg.mpdl.ebooksreader.mvp.presenter.SearchFragmentPresenter;
 import de.mpg.mpdl.ebooksreader.mvp.view.SearchFragmentView;
+import de.mpg.mpdl.ebooksreader.utils.JacksonUtil;
 import de.mpg.mpdl.ebooksreader.utils.PropertiesReader;
 
 public class SearchFragment extends BaseMvpFragment<SearchFragmentPresenter> implements SearchFragmentView, BookClickListener {
@@ -69,7 +70,7 @@ public class SearchFragment extends BaseMvpFragment<SearchFragmentPresenter> imp
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        backImageView = getActivity().findViewById(R.id.backImageView);
+        backImageView = getActivity().findViewById(R.id.detailBackImageView);
         ebooksSearchImageView = getActivity().findViewById(R.id.ebooksSearchImageView);
         searchResultRecyclerView = getActivity().findViewById(R.id.searchResultRecyclerView);
         ebooksLabel = getActivity().findViewById(R.id.ebooksLabel);
@@ -170,7 +171,11 @@ public class SearchFragment extends BaseMvpFragment<SearchFragmentPresenter> imp
 
     @Override
     public void onItemClick(View view, int position) {
+        if (position == -1) return;
+        DocDTO docDTO = searchResultList.get(position);
+        String docDTOStr = JacksonUtil.stringfyDocDTO(docDTO);
         Intent bookDescriptionIntent = new Intent(getActivity(), BookDescriptionActivity.class);
+        bookDescriptionIntent.putExtra("docDTOStr", docDTOStr);
         startActivity(bookDescriptionIntent);
     }
 
