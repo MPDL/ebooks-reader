@@ -22,6 +22,8 @@ dependencies {
     implementation 'com.trello:rxlifecycle-android:1.0'
     implementation 'com.trello:rxlifecycle-components:1.0'
     implementation 'com.android.support:recyclerview-v7:26.+'
+    implementation 'com.tonyodev.fetch2:fetch2:3.0.3'
+    implementation 'com.jakewharton.timber:timber:4.1.2'
     if (file('../lib/build.gradle').isFile())
         api project(':lib')
     else
@@ -29,7 +31,7 @@ dependencies {
 }
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion 28
     defaultConfig {
         applicationId "de.mpg.mpdl.ebooksreader"
         minSdkVersion 26
@@ -69,5 +71,9 @@ android {
                 signingConfig signingConfigs.release
             }
         }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }

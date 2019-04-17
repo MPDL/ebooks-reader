@@ -4,6 +4,7 @@
     android:installLocation="auto">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -12,6 +13,7 @@
         android:icon="@drawable/ic_mupdf"
         android:label="Ebooks Reader"
         android:theme="@style/AppTheme">
+        <activity android:name=".DownloadBookActivity"></activity>
         <activity android:name=".BookDescriptionActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
