@@ -2,7 +2,6 @@ package de.mpg.mpdl.ebooksreader.activity.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.design.widget.TabLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -29,6 +28,7 @@ import de.mpg.mpdl.ebooksreader.model.dto.QueryResponseDTO;
 import de.mpg.mpdl.ebooksreader.mvp.presenter.SearchFragmentPresenter;
 import de.mpg.mpdl.ebooksreader.mvp.view.SearchFragmentView;
 import de.mpg.mpdl.ebooksreader.utils.JacksonUtil;
+import de.mpg.mpdl.ebooksreader.utils.PreferenceUtil;
 import de.mpg.mpdl.ebooksreader.utils.PropertiesReader;
 
 public class SearchFragment extends BaseMvpFragment<SearchFragmentPresenter> implements SearchFragmentView, BookClickListener {
@@ -117,6 +117,7 @@ public class SearchFragment extends BaseMvpFragment<SearchFragmentPresenter> imp
             }
         });
 
+        ebooksSearchView.setQuery("", false);
         ebooksSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -161,7 +162,12 @@ public class SearchFragment extends BaseMvpFragment<SearchFragmentPresenter> imp
     public void onItemClick(View view, int position) {
         if (position == -1) return;
         DocDTO docDTO = searchResultList.get(position);
-        String docDTOStr = JacksonUtil.stringfyDocDTO(docDTO);
+        String docDTOStr = JacksonUtil.stringifyDocDTO(docDTO);
+
+        List<DocDTO> docDTOList = JacksonUtil.parseDocDTOList(PreferenceUtil.getString(getActivity(), PreferenceUtil.SHARED_PREFERENCES, PreferenceUtil.DOWNLOADED_BOOKS, ""));
+        docDTOList.add(docDTO);
+        PreferenceUtil.setString(getActivity(), PreferenceUtil.SHARED_PREFERENCES, PreferenceUtil.DOWNLOADED_BOOKS, JacksonUtil.stringifyDocDTOList(docDTOList));
+
         Intent bookDescriptionIntent = new Intent(getActivity(), BookDescriptionActivity.class);
         bookDescriptionIntent.putExtra("docDTOStr", docDTOStr);
         startActivity(bookDescriptionIntent);
