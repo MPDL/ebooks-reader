@@ -13,6 +13,7 @@
         android:icon="@drawable/ic_favicon"
         android:label="Ebooks Reader"
         android:theme="@style/AppTheme">
+
         <activity android:name=".BookDescriptionActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>

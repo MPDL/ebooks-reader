@@ -1,66 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="116.5dp"
-    android:layout_marginHorizontal="8.5dp">
+<android.support.v7.widget.CardView
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    card_view:cardBackgroundColor="#FFFAFA"
+    card_view:cardCornerRadius="8dp"
+    card_view:cardElevation="2dp"
+    android:clickable="true"
+    android:foreground="?android:attr/selectableItemBackground">
 
-    <ImageView
-        android:id="@+id/resultBookCoverImageView"
-        android:layout_width="76.5dp"
-        android:layout_height="108.5dp"
-        android:layout_marginStart="12.5dp"
-        android:layout_marginTop="4.5dp"
-        android:src="@drawable/ic_open_book"
-        android:contentDescription="@string/desc_book_cover_image_view" />
-
-    <TextView
-        android:id="@+id/autoIncrementTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toEndOf="@id/resultBookCoverImageView"
-        android:layout_marginStart="20.5dp"
-        android:layout_marginTop="4.5dp"
-        android:gravity="center_vertical" />
-
-    <TextView
-        android:id="@+id/resultBookTitleTextView"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="16.5dp"
-        android:layout_toEndOf="@id/resultBookCoverImageView"
-        android:layout_marginStart="20.5dp"
-        android:layout_marginEnd="12.5dp"
-        android:layout_below="@id/autoIncrementTextView"
-        android:layout_marginTop="4.5dp"
-        android:gravity="center_vertical" />
+        android:layout_height="116.5dp"
+        android:layout_marginHorizontal="8.5dp"
+        android:elevation="10dp">
+        <ImageView
+            android:id="@+id/resultBookCoverImageView"
+            android:layout_width="76.5dp"
+            android:layout_height="108.5dp"
+            android:layout_marginStart="12.5dp"
+            android:layout_marginTop="4.5dp"
+            android:src="@drawable/ic_open_book"
+            android:contentDescription="@string/desc_book_cover_image_view"/>
 
-    <TextView
-        android:id="@+id/resultBookAuthorTextView"
-        android:layout_width="match_parent"
-        android:layout_height="16.5dp"
-        android:layout_toEndOf="@id/resultBookCoverImageView"
-        android:layout_marginStart="20.5dp"
-        android:layout_marginEnd="12.5dp"
-        android:layout_below="@id/resultBookTitleTextView"
-        android:layout_marginTop="8.5dp" />
+        <TextView
+            android:id="@+id/autoIncrementTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/resultBookCoverImageView"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="4.5dp"
+            android:textSize="10sp"
+            android:elevation="5dp"/>
 
-    <TextView
-        android:id="@+id/resultBookPublishDateTextView"
-        android:layout_width="match_parent"
-        android:layout_height="16.5dp"
-        android:layout_toEndOf="@id/resultBookCoverImageView"
-        android:layout_marginStart="20.5dp"
-        android:layout_marginEnd="12.5dp"
-        android:layout_below="@id/resultBookAuthorTextView"
-        android:layout_marginTop="8.5dp" />
+        <TextView
+            android:id="@+id/resultBookTitleTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/resultBookCoverImageView"
+            android:layout_marginStart="20.5dp"
+            android:layout_marginTop="4.5dp"
+            android:layout_marginEnd="12.5dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textStyle="bold"
+            android:gravity="center_vertical"
+            android:maxLines="3"/>
 
-    <TextView
-        android:id="@+id/resultBookPublisherTextView"
-        android:layout_width="match_parent"
-        android:layout_height="16.5dp"
-        android:layout_toEndOf="@id/resultBookCoverImageView"
-        android:layout_marginStart="20.5dp"
-        android:layout_marginEnd="12.5dp"
-        android:layout_below="@id/resultBookPublishDateTextView"
-        android:layout_marginTop="8.5dp" />
+        <TextView
+            android:id="@+id/resultBookAuthor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/resultBookCoverImageView"
+            android:layout_marginStart="20.5dp"
+            android:layout_marginEnd="12.5dp"
+            android:layout_below="@id/resultBookTitleTextView"
+            android:layout_marginTop="17dp"
+            android:text="@string/author"
+            android:textStyle="bold"
+            android:textSize="12sp"
+            android:gravity="bottom"/>
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/resultBookAuthorTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/resultBookAuthor"
+            android:layout_marginStart="10dp"
+            android:layout_below="@id/resultBookTitleTextView"
+            android:layout_marginTop="15dp"
+            android:textColor="@color/colorBlack"/>
+
+        <TextView
+            android:id="@+id/resultBookPublishDateTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/resultBookCoverImageView"
+            android:layout_marginStart="20.5dp"
+            android:layout_below="@id/resultBookAuthorTextView"
+            android:layout_marginTop="5dp"
+            android:textStyle="italic"
+            android:textSize="12sp"/>
+
+        <TextView
+            android:id="@+id/resultBookPublisherTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/resultBookPublishDateTextView"
+            android:layout_marginStart="20.5dp"
+            android:layout_below="@id/resultBookAuthorTextView"
+            android:layout_marginTop="5dp"
+            android:textStyle="italic"
+            android:textSize="12sp"/>
+    </RelativeLayout>
+</android.support.v7.widget.CardView>
