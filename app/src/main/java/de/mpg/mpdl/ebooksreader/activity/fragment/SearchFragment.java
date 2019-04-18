@@ -135,7 +135,6 @@ public class SearchFragment extends BaseMvpFragment<SearchFragmentPresenter> imp
             }
         });
 
-
         searchResultRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         searchResultAdapter = new SearchResultAdapter(searchResultRecyclerView, searchResultList);
         searchResultAdapter.setClickListener(this);
@@ -180,6 +179,9 @@ public class SearchFragment extends BaseMvpFragment<SearchFragmentPresenter> imp
         for (DocDTO docDTO : moreDocDTOs) {
             if (docDTO != null && docDTO.getIsbn() != null) {
                 docDTO.setCoverUrl("https://ebooks4-qa.mpdl.mpg.de/ebooks/Cover/Show?size=small&isbn=" + docDTO.getIsbn().get(0));
+            }
+            if (docDTO !=null && docDTO.getUrlPdfStr() == null && docDTO.getUrls() != null && docDTO.getUrls().size() > 0) {
+                docDTO.setUrlPdfStr(docDTO.getUrls().get(0).replace("http://dx.doi.org/", "https://link.springer.com/content/pdf/"));
             }
         }
 
