@@ -20,7 +20,7 @@ public class EbooksReaderApp extends BaseApplication {
                 .enableRetryOnNetworkGain(true)
                 .setDownloadConcurrentLimit(3)
                 .setHttpDownloader(new HttpUrlConnectionDownloader(Downloader.FileDownloaderType.PARALLEL))
-                // OR
+                // TODO: OR OkHttpDownloader
                 //.setHttpDownloader(getOkHttpDownloader())
                 .build();
         Fetch.Impl.setDefaultInstanceConfiguration(fetchConfiguration);
