@@ -9,7 +9,7 @@
         android:id="@+id/downloadedBookCoverImageView"
         android:layout_width="128.5dp"
         android:layout_height="176.5dp"
-        android:src="@drawable/ic_mupdf"
+        android:src="@drawable/ic_favicon"
         android:layout_centerHorizontal="true"
         android:contentDescription="@string/desc_book_cover_image_view"/>
 

@@ -1,19 +1,17 @@
 package de.mpg.mpdl.ebooksreader.activity;
 
 import android.Manifest;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
 import android.support.v4.util.ArrayMap;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.ImageView;
 
 import com.tonyodev.fetch2.AbstractFetchListener;
 import com.tonyodev.fetch2.Download;
@@ -29,40 +27,105 @@ import com.tonyodev.fetch2core.MutableExtras;
 import com.tonyodev.fetch2core.Reason;
 
 import org.jetbrains.annotations.NotNull;
-
 import java.util.Set;
-
 import de.mpg.mpdl.ebooksreader.utils.Data;
 import timber.log.Timber;
+import de.mpg.mpdl.ebooksreader.base.BaseCompatActivity;
+import de.mpg.mpdl.ebooksreader.injection.module.glide.ImageLoader;
+import de.mpg.mpdl.ebooksreader.model.dto.DocDTO;
+import de.mpg.mpdl.ebooksreader.utils.JacksonUtil;
 
-public class BookDescriptionActivity extends AppCompatActivity implements FetchObserver<Download> {
+public class BookDescriptionActivity extends BaseCompatActivity implements FetchObserver<Download>{
+
     private static final int STORAGE_PERMISSION_CODE = 100;
     private static final String TAG = "BookDescriptionActivity";
     private static final int groupId = 12;
 
-    private TextView progressTextView;
+    private final ArrayMap<Integer, Integer> fileProgressMap = new ArrayMap<>();
     private Request request;
     private Fetch fetch;
-    private Button downloadButton;
-    private ProgressBar Progressbar;
-    private final ArrayMap<Integer, Integer> fileProgressMap = new ArrayMap<>();
+
     static int lastProgress;
     static int lastProgressId;
 
+    TextView progressTextView;
+    ImageView detailCoverImageView;
+    ImageView detailBackImageView;
+    TextView detailAbstractTextView;
+    TextView detailTitleTextView;
+    TextView detailSubtitleTextView;
+    TextView detailAuthorTextView;
+    TextView detailPublishDateTextView;
+    TextView detailPublisherTextView;
+    Button downloadButton;
+    ProgressBar Progressbar;
+
+    DocDTO docDTO;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_book_description);
+    protected int getLayoutId() {
+        return R.layout.activity_book_description;
+    }
+
+    @Override
+    protected void initContentView(Bundle savedInstanceState) {
+
         progressTextView = findViewById(R.id.progress_TextView);
         downloadButton = findViewById(R.id.downloadButton);
         Progressbar = findViewById(R.id.Progressbar);
         fetch = Fetch.Impl.getDefaultInstance();
         downloadButton.setOnClickListener(v -> {checkStoragePermission();});
+
+        String docDTOStr = getIntent().getStringExtra("docDTOStr");
+        docDTO = JacksonUtil.parseDocDTO(docDTOStr);
+
+        detailCoverImageView = findViewById(R.id.detailCoverImageView);
+        detailBackImageView = findViewById(R.id.detailBackImageView);
+        detailAbstractTextView = findViewById(R.id.detailAbstractTextView);
+        detailTitleTextView = findViewById(R.id.detailTitleTextView);
+        detailSubtitleTextView = findViewById(R.id.detailSubtitleTextView);
+        detailAuthorTextView = findViewById(R.id.detailAuthorTextView);
+        detailPublishDateTextView = findViewById(R.id.detailPublishDateTextView);
+        detailPublisherTextView = findViewById(R.id.detailPublisherTextView);
+
+        if (null != docDTO.getCoverUrl()) {
+            ImageLoader.loadStringRes(detailCoverImageView, docDTO.getCoverUrl(), ImageLoader.defConfig, null);
+        }
+
+        detailBackImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
+        if (null != docDTO.getDescription()) {
+            detailAbstractTextView.setText(docDTO.getDescription());
+        }
+
+        if (null != docDTO.getTitle()) {
+            detailTitleTextView.setText(docDTO.getTitle());
+        }
+
+        if (null != docDTO.getSubTitle()) {
+            detailSubtitleTextView.setText(docDTO.getSubTitle());
+        }
+
+        if (null != docDTO.getAuthorList() && docDTO.getAuthorList().size() > 0) {
+            detailAuthorTextView.setText(docDTO.getAuthorList().get(0));
+        }
+
+        if (null != docDTO.getPublishDate() && docDTO.getPublishDate().size() > 0) {
+            detailPublishDateTextView.setText(docDTO.getPublishDate().get(0));
+        }
+
+        if (null != docDTO.getPublisher() && docDTO.getPublisher().size() > 0) {
+            detailPublisherTextView.setText(docDTO.getPublisher().get(0));
+        }
     }
 
     @Override
     protected void onResume() {
-        Log.i(TAG, "onResume: ");
         super.onResume();
         if (lastProgress!=0){
             Progressbar.setProgress(lastProgress);
@@ -73,17 +136,10 @@ public class BookDescriptionActivity extends AppCompatActivity implements FetchO
 
     @Override
     protected void onPause() {
-        Log.i(TAG, "onPause: ");
         super.onPause();
         if (fetch!=null && request!=null) {
             fetch.pause(request.getId());
         }
-    }
-
-    @Override
-    protected void onStop() {
-        Log.i(TAG, "onStop: ");
-        super.onStop();
     }
 
     @Override
@@ -117,9 +173,19 @@ public class BookDescriptionActivity extends AppCompatActivity implements FetchO
 
     private void enqueueDownload() {
         Log.i(TAG, "enqueueDownload: ");
-        final String url = Data.sampleUrls[0];
-        final String filePath = Data.getSaveDir() + "/movies/" + Data.getNameFromUrl(url);
-        request = new Request(url, filePath);
+        if (null == docDTO.getUrlPdfStr() && docDTO.getUrlPdfStr().equalsIgnoreCase("")) {
+            showMessage("Download url not found.");
+            return;
+        }
+        
+        final String url = docDTO.getUrlPdfStr();
+        if (null != docDTO.getIsbn() && docDTO.getIsbn().size()>0) {
+            final String filePath = Data.getSaveDir() + "/books/" + docDTO.getIsbn().get(0) + ".pdf";
+            request = new Request(url, filePath);
+        } else {
+            showMessage("ISBN of the book not found.");
+            return;
+        }
         request.setExtras(getExtrasForRequest(request));
 
         fetch.getDownloadsInGroup(groupId, downloads -> {
@@ -141,7 +207,7 @@ public class BookDescriptionActivity extends AppCompatActivity implements FetchO
                 }, new Func<Error>() {
                     @Override
                     public void call(@NotNull Error result) {
-                        Timber.d("SingleDownloadActivity Error: %1$s", result.toString());
+                        Timber.d("Download Error: %1$s", result.toString());
                     }
                 });
     }
@@ -191,6 +257,7 @@ public class BookDescriptionActivity extends AppCompatActivity implements FetchO
     private void updateUIWithProgress() {
         final int progress = getDownloadProgress();
         Progressbar.setProgress(progress);
+        if (progress == 100) downloadButton.setVisibility(View.GONE);
     }
 
     private int getDownloadProgress() {

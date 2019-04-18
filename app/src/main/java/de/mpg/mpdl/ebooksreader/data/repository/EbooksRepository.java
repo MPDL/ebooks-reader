@@ -4,5 +4,5 @@ import de.mpg.mpdl.ebooksreader.model.dto.QueryResponseDTO;
 import rx.Observable;
 
 public interface EbooksRepository {
-    Observable<QueryResponseDTO> selectDocs(String credential, String indent, String q, String wt);
+    Observable<QueryResponseDTO> selectDocs(String credential, String indent, String q, int start, String wt);
 }

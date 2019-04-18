@@ -16,7 +16,7 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class RetrofitFactory {
 
-    public static String BASE_URL = "https://ebooks4-qa.mpdl.mpg.de/";
+    public static String BASE_URL_SOLR = "https://ebooks4-qa.mpdl.mpg.de/";
 
     private static volatile RetrofitFactory sInstance;
 
@@ -24,7 +24,7 @@ public class RetrofitFactory {
 
     private RetrofitFactory() {
         retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
+                .baseUrl(BASE_URL_SOLR)
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())

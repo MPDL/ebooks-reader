@@ -10,7 +10,7 @@
         android:layout_height="108.5dp"
         android:layout_marginStart="12.5dp"
         android:layout_marginTop="4.5dp"
-        android:src="@drawable/ic_mupdf"
+        android:src="@drawable/ic_open_book"
         android:contentDescription="@string/desc_book_cover_image_view" />
 
     <TextView
@@ -36,11 +36,31 @@
     <TextView
         android:id="@+id/resultBookAuthorTextView"
         android:layout_width="match_parent"
-        android:layout_height="68.5dp"
+        android:layout_height="16.5dp"
         android:layout_toEndOf="@id/resultBookCoverImageView"
         android:layout_marginStart="20.5dp"
         android:layout_marginEnd="12.5dp"
         android:layout_below="@id/resultBookTitleTextView"
+        android:layout_marginTop="8.5dp" />
+
+    <TextView
+        android:id="@+id/resultBookPublishDateTextView"
+        android:layout_width="match_parent"
+        android:layout_height="16.5dp"
+        android:layout_toEndOf="@id/resultBookCoverImageView"
+        android:layout_marginStart="20.5dp"
+        android:layout_marginEnd="12.5dp"
+        android:layout_below="@id/resultBookAuthorTextView"
+        android:layout_marginTop="8.5dp" />
+
+    <TextView
+        android:id="@+id/resultBookPublisherTextView"
+        android:layout_width="match_parent"
+        android:layout_height="16.5dp"
+        android:layout_toEndOf="@id/resultBookCoverImageView"
+        android:layout_marginStart="20.5dp"
+        android:layout_marginEnd="12.5dp"
+        android:layout_below="@id/resultBookPublishDateTextView"
         android:layout_marginTop="8.5dp" />
 
 </RelativeLayout>

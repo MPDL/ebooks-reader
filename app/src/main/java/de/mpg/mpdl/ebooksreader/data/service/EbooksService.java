@@ -5,5 +5,5 @@ import de.mpg.mpdl.ebooksreader.model.dto.QueryResponseDTO;
 import rx.Observable;
 
 public abstract class EbooksService extends BaseService {
-    public abstract Observable<QueryResponseDTO> selectDocs(String credential, String indent, String q, String wt);
+    public abstract Observable<QueryResponseDTO> selectDocs(String credential, String indent, String q, int start, String wt);
 }
