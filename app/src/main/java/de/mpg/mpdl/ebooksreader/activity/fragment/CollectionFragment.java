@@ -9,12 +9,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.support.v7.widget.SearchView;
 import android.widget.TextView;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
+import java.util.regex.Pattern;
 
 import de.mpg.mpdl.ebooksreader.activity.R;
 import de.mpg.mpdl.ebooksreader.common.adapter.BookShelfAdapter;
@@ -30,6 +32,7 @@ public class CollectionFragment extends Fragment {
     ImageView deleteImageView;
     ImageView editImageView;
     TextView booksCountTextView;
+    SearchView shelfBooksSearchView;
     RecyclerView bookshelfRecyclerView;
     BookShelfAdapter bookShelfAdapter;
     List<DownloadedBookModel> bookModelList = new ArrayList<>();
@@ -47,12 +50,38 @@ public class CollectionFragment extends Fragment {
         finishEditBookshelfImageView = getActivity().findViewById(R.id.finishEditBookshelfImageView);
         deleteImageView = getActivity().findViewById(R.id.deleteImageView);
         editImageView = getActivity().findViewById(R.id.editImageView);
+        shelfBooksSearchView = getActivity().findViewById(R.id.shelfBooksSearchView);
         bookshelfRecyclerView = getActivity().findViewById(R.id.bookshelfRecyclerView);
         booksCountTextView = getActivity().findViewById(R.id.booksCountTextView);
 
         updateBookModelList();
-
         booksCountTextView.setText(bookModelList.size() + " Books");
+
+        shelfBooksSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                bookModelList.removeIf(new Predicate<DownloadedBookModel>() {
+                    @Override
+                    public boolean test(DownloadedBookModel downloadedBookModel) {
+                        String regex = "(?i).*" + query + ".*";
+                        return !Pattern.matches(regex, downloadedBookModel.getTitle());
+                    }
+                });
+
+                bookShelfAdapter.notifyDataSetChanged();
+                booksCountTextView.setText(bookModelList.size() + " Books");
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if(newText == null || newText.isEmpty()) {
+                    updateBookModelList();
+                    booksCountTextView.setText(bookModelList.size() + " Books");
+                }
+                return false;
+            }
+        });
 
         RecyclerView.LayoutManager bookshelfRecyclerViewLayoutManager = new GridLayoutManager(getActivity(),3);
         bookshelfRecyclerView.setLayoutManager(bookshelfRecyclerViewLayoutManager);
