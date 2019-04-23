@@ -1,5 +1,8 @@
 package de.mpg.mpdl.ebooksreader.common.adapter;
 
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,18 +12,27 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.File;
 import java.util.List;
 
+import de.mpg.mpdl.ebooksreader.DocumentActivity;
+import de.mpg.mpdl.ebooksreader.activity.MainActivity;
 import de.mpg.mpdl.ebooksreader.activity.R;
+import de.mpg.mpdl.ebooksreader.injection.module.glide.ImageLoader;
 import de.mpg.mpdl.ebooksreader.model.DownloadedBookModel;
+import de.mpg.mpdl.ebooksreader.model.dto.DocDTO;
+import de.mpg.mpdl.ebooksreader.utils.Data;
+import de.mpg.mpdl.ebooksreader.utils.JacksonUtil;
+import de.mpg.mpdl.ebooksreader.utils.PreferenceUtil;
 
 public class BookShelfAdapter extends RecyclerView.Adapter<BookShelfAdapter.BookShelfViewHolder> {
 
     private List<DownloadedBookModel> downloadedBooks;
     private boolean inEditMode;
+    private Context context;
 
-
-    public BookShelfAdapter(List<DownloadedBookModel> downloadedBooks, boolean inEditMode) {
+    public BookShelfAdapter(Context context, List<DownloadedBookModel> downloadedBooks, boolean inEditMode) {
+        this.context = context;
         this.downloadedBooks = downloadedBooks;
         this.inEditMode = inEditMode;
     }
@@ -65,6 +77,39 @@ public class BookShelfAdapter extends RecyclerView.Adapter<BookShelfAdapter.Book
                 }
             }
         });
+
+        holder.downloadedBookCoverImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                File file = new File(Data.getSaveDir() + "/books/" + downloadedBooks.get(position).getIsbn() + ".pdf");
+                if (!file.isFile())
+                    return;
+
+                List<DocDTO> docDTOList = JacksonUtil.parseDocDTOList(PreferenceUtil.getString(context, PreferenceUtil.SHARED_PREFERENCES, PreferenceUtil.DOWNLOADED_BOOKS, ""));
+                int index = -1;
+                for (int i = 0; i < docDTOList.size(); i++) {
+                    if ( null != docDTOList && docDTOList.size() > 0 && docDTOList.get(i).getIsbn().get(0).equalsIgnoreCase(downloadedBooks.get(position).getIsbn())) {
+                        index = i;
+                        break;
+                    }
+                }
+
+                if (index == -1) return;
+
+                DocDTO docDTO = docDTOList.get(index);
+                docDTOList.remove(index);
+                docDTOList.add(0, docDTO);
+
+                PreferenceUtil.setString(context, PreferenceUtil.SHARED_PREFERENCES, PreferenceUtil.DOWNLOADED_BOOKS, JacksonUtil.stringifyDocDTOList(docDTOList));
+
+                Intent intent = new Intent(context, DocumentActivity.class);
+                intent.setAction(Intent.ACTION_VIEW);
+                intent.setData(Uri.fromFile(file));
+                context.startActivity(intent);
+            }
+        });
+
+        ImageLoader.loadStringRes(holder.downloadedBookCoverImageView, "https://ebooks4-qa.mpdl.mpg.de/ebooks/Cover/Show?size=small&isbn=" + downloadedBooks.get(position).getIsbn(), ImageLoader.defConfig, null);
     }
 
     @Override

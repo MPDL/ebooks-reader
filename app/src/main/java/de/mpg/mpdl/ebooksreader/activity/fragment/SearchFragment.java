@@ -28,7 +28,6 @@ import de.mpg.mpdl.ebooksreader.model.dto.QueryResponseDTO;
 import de.mpg.mpdl.ebooksreader.mvp.presenter.SearchFragmentPresenter;
 import de.mpg.mpdl.ebooksreader.mvp.view.SearchFragmentView;
 import de.mpg.mpdl.ebooksreader.utils.JacksonUtil;
-import de.mpg.mpdl.ebooksreader.utils.PreferenceUtil;
 import de.mpg.mpdl.ebooksreader.utils.PropertiesReader;
 
 public class SearchFragment extends BaseMvpFragment<SearchFragmentPresenter> implements SearchFragmentView, BookClickListener {
@@ -77,44 +76,38 @@ public class SearchFragment extends BaseMvpFragment<SearchFragmentPresenter> imp
         searchHintTextView = getActivity().findViewById(R.id.searchHintTextView);
         ebooksSearchView = getActivity().findViewById(R.id.ebooksSearchView);
 
-        backImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ebooksSearchImageView.setVisibility(View.VISIBLE);
-                TabLayout tabLayout = getActivity().findViewById(R.id.tabLayout);
-                tabLayout.setVisibility(View.VISIBLE);
-                ebooksLabel.setVisibility(View.VISIBLE);
-                ebooksDescriptionTextView.setVisibility(View.VISIBLE);
-                searchHintTextView.setVisibility(View.VISIBLE);
+        backImageView.setOnClickListener(view1 -> {
+            ebooksSearchImageView.setVisibility(View.VISIBLE);
+            TabLayout tabLayout = getActivity().findViewById(R.id.tabLayout);
+            tabLayout.setVisibility(View.VISIBLE);
+            ebooksLabel.setVisibility(View.VISIBLE);
+            ebooksDescriptionTextView.setVisibility(View.VISIBLE);
+            searchHintTextView.setVisibility(View.VISIBLE);
 
-                backImageView.setVisibility(View.GONE);
-                searchResultRecyclerView.setVisibility(View.GONE);
-                RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)ebooksSearchView.getLayoutParams();
-                params.setMargins(params.leftMargin, 435, params.rightMargin, params.bottomMargin);
-                ebooksSearchView.setLayoutParams(params);
-                ebooksSearchView.setQuery("", false);
-                ebooksSearchView.clearFocus();
-            }
+            backImageView.setVisibility(View.GONE);
+            searchResultRecyclerView.setVisibility(View.GONE);
+            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)ebooksSearchView.getLayoutParams();
+            params.setMargins(params.leftMargin, 435, params.rightMargin, params.bottomMargin);
+            ebooksSearchView.setLayoutParams(params);
+            ebooksSearchView.setQuery("", false);
+            ebooksSearchView.clearFocus();
         });
 
-        searchHintTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ebooksSearchImageView.setVisibility(View.GONE);
-                TabLayout tabLayout = getActivity().findViewById(R.id.tabLayout);
-                tabLayout.setVisibility(View.GONE);
-                ebooksLabel.setVisibility(View.GONE);
-                ebooksDescriptionTextView.setVisibility(View.GONE);
-                searchHintTextView.setVisibility(View.GONE);
+        searchHintTextView.setOnClickListener(view12 -> {
+            ebooksSearchImageView.setVisibility(View.GONE);
+            TabLayout tabLayout = getActivity().findViewById(R.id.tabLayout);
+            tabLayout.setVisibility(View.GONE);
+            ebooksLabel.setVisibility(View.GONE);
+            ebooksDescriptionTextView.setVisibility(View.GONE);
+            searchHintTextView.setVisibility(View.GONE);
 
-                backImageView.setVisibility(View.VISIBLE);
-                searchResultRecyclerView.setVisibility(View.VISIBLE);
-                RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)ebooksSearchView.getLayoutParams();
-                params.setMargins(params.leftMargin, 210, params.rightMargin, params.bottomMargin);
-                ebooksSearchView.setLayoutParams(params);
-                ebooksSearchView.setIconified(false);
-                searchResultList.clear();
-            }
+            backImageView.setVisibility(View.VISIBLE);
+            searchResultRecyclerView.setVisibility(View.VISIBLE);
+            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)ebooksSearchView.getLayoutParams();
+            params.setMargins(params.leftMargin, 210, params.rightMargin, params.bottomMargin);
+            ebooksSearchView.setLayoutParams(params);
+            ebooksSearchView.setIconified(false);
+            searchResultList.clear();
         });
 
         ebooksSearchView.setQuery("", false);
@@ -124,15 +117,23 @@ public class SearchFragment extends BaseMvpFragment<SearchFragmentPresenter> imp
                 searchResultList.clear();
                 index = 0;
                 queryStr = query;
-                mPresenter.selectDocs(HASH_CREDENTIAL, "on", "allfields:"+ query +" prodcode_str_mv:SBA OR prodcode_str_mv:Springer OR prodcode_str_mv:OAPEN", index,"json", (BaseActivity) getActivity());
+                if (!queryStr.isEmpty()) {
+                    mPresenter.selectDocs(HASH_CREDENTIAL, "on", "allfields:" + query + " prodcode_str_mv:SBA OR prodcode_str_mv:Springer OR prodcode_str_mv:OAPEN", index, "json", (BaseActivity) getActivity());
+                }
                 return true;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                if(newText.equalsIgnoreCase("")) searchResultList.clear();
+                if(newText == null || newText.isEmpty()) {
+                    searchResultList.clear();
+                    queryStr = "";
+                }
+                searchResultAdapter.notifyDataSetChanged();
                 return false;
             }
+
+
         });
 
         searchResultRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -142,7 +143,7 @@ public class SearchFragment extends BaseMvpFragment<SearchFragmentPresenter> imp
         searchResultAdapter.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore() {
-                if(index <= 49) {
+                if (index <= 49 && !queryStr.isEmpty()) {
                     mPresenter.selectDocs(HASH_CREDENTIAL, "on", "allfields:" + queryStr + " prodcode_str_mv:SBA OR prodcode_str_mv:Springer OR prodcode_str_mv:OAPEN", index, "json", (BaseActivity) getActivity());
                 }
             }
@@ -162,10 +163,6 @@ public class SearchFragment extends BaseMvpFragment<SearchFragmentPresenter> imp
         if (position == -1) return;
         DocDTO docDTO = searchResultList.get(position);
         String docDTOStr = JacksonUtil.stringifyDocDTO(docDTO);
-
-        List<DocDTO> docDTOList = JacksonUtil.parseDocDTOList(PreferenceUtil.getString(getActivity(), PreferenceUtil.SHARED_PREFERENCES, PreferenceUtil.DOWNLOADED_BOOKS, ""));
-        docDTOList.add(docDTO);
-        PreferenceUtil.setString(getActivity(), PreferenceUtil.SHARED_PREFERENCES, PreferenceUtil.DOWNLOADED_BOOKS, JacksonUtil.stringifyDocDTOList(docDTOList));
 
         Intent bookDescriptionIntent = new Intent(getActivity(), BookDescriptionActivity.class);
         bookDescriptionIntent.putExtra("docDTOStr", docDTOStr);

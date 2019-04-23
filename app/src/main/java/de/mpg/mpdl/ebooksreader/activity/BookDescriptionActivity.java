@@ -20,15 +20,16 @@ import com.tonyodev.fetch2.Fetch;
 import com.tonyodev.fetch2.FetchListener;
 import com.tonyodev.fetch2.Request;
 import com.tonyodev.fetch2.Status;
-import com.tonyodev.fetch2core.Extras;
+
 import com.tonyodev.fetch2core.FetchObserver;
-import com.tonyodev.fetch2core.Func;
-import com.tonyodev.fetch2core.MutableExtras;
 import com.tonyodev.fetch2core.Reason;
 
 import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 import java.util.Set;
 import de.mpg.mpdl.ebooksreader.utils.Data;
+import de.mpg.mpdl.ebooksreader.utils.PreferenceUtil;
 import timber.log.Timber;
 import de.mpg.mpdl.ebooksreader.base.BaseCompatActivity;
 import de.mpg.mpdl.ebooksreader.injection.module.glide.ImageLoader;
@@ -92,12 +93,7 @@ public class BookDescriptionActivity extends BaseCompatActivity implements Fetch
             ImageLoader.loadStringRes(detailCoverImageView, docDTO.getCoverUrl(), ImageLoader.defConfig, null);
         }
 
-        detailBackImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+        detailBackImageView.setOnClickListener(view -> finish());
 
         if (null != docDTO.getDescription()) {
             detailAbstractTextView.setText(docDTO.getDescription());
@@ -122,6 +118,8 @@ public class BookDescriptionActivity extends BaseCompatActivity implements Fetch
         if (null != docDTO.getPublisher() && docDTO.getPublisher().size() > 0) {
             detailPublisherTextView.setText(docDTO.getPublisher().get(0));
         }
+
+        lastProgress = 0;
     }
 
     @Override
@@ -186,7 +184,6 @@ public class BookDescriptionActivity extends BaseCompatActivity implements Fetch
             showMessage("ISBN of the book not found.");
             return;
         }
-        request.setExtras(getExtrasForRequest(request));
 
         fetch.getDownloadsInGroup(groupId, downloads -> {
             for (Download download : downloads) {
@@ -199,34 +196,12 @@ public class BookDescriptionActivity extends BaseCompatActivity implements Fetch
             }
         }).addListener(fetchListener);
         fetch.attachFetchObserversForDownload(request.getId(), this)
-                .enqueue(request, new Func<Request>() {
-                    @Override
-                    public void call(@NotNull Request result) {
-                        request = result;
-                    }
-                }, new Func<Error>() {
-                    @Override
-                    public void call(@NotNull Error result) {
-                        Timber.d("Download Error: %1$s", result.toString());
-                    }
-                });
-    }
-
-    private Extras getExtrasForRequest(Request request) {
-        final MutableExtras extras = new MutableExtras();
-        extras.putBoolean("testBoolean", true);
-        extras.putString("testString", "test");
-        extras.putFloat("testFloat", Float.MIN_VALUE);
-        extras.putDouble("testDouble", Double.MIN_VALUE);
-        extras.putInt("testInt", Integer.MAX_VALUE);
-        extras.putLong("testLong", Long.MAX_VALUE);
-        return extras;
+                .enqueue(request, result -> request = result, result -> Timber.d("Download Error: %1$s", result.toString()));
     }
 
     private void updateViews(@NotNull Download download, Reason reason) {
         if (request.getId() == download.getId()) {
             setProgressView(download.getStatus(), download.getProgress());
-
         }
     }
 
@@ -279,6 +254,16 @@ public class BookDescriptionActivity extends BaseCompatActivity implements Fetch
             lastProgress = download.getProgress();
             lastProgressId = download.getId();
             updateUIWithProgress();
+
+            List<DocDTO> docDTOList = JacksonUtil.parseDocDTOList(PreferenceUtil.getString(getApplicationContext(), PreferenceUtil.SHARED_PREFERENCES, PreferenceUtil.DOWNLOADED_BOOKS, ""));
+            for (DocDTO downloadedDocDTO : docDTOList) {
+                if (downloadedDocDTO.getUrlPdfStr().equalsIgnoreCase(docDTO.getUrlPdfStr())) return;
+            }
+
+            docDTOList.add(docDTO);
+            PreferenceUtil.setString(getApplicationContext(), PreferenceUtil.SHARED_PREFERENCES, PreferenceUtil.DOWNLOADED_BOOKS, JacksonUtil.stringifyDocDTOList(docDTOList));
+
+            Log.e("onCompleted", JacksonUtil.parseDocDTOList(PreferenceUtil.getString(getApplicationContext(), PreferenceUtil.SHARED_PREFERENCES, PreferenceUtil.DOWNLOADED_BOOKS, "")).size() + "");
         }
 
         @Override

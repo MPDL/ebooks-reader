@@ -14,7 +14,6 @@ import java.util.List;
 import de.mpg.mpdl.ebooksreader.activity.R;
 import de.mpg.mpdl.ebooksreader.common.adapter.interf.BookClickListener;
 import de.mpg.mpdl.ebooksreader.common.adapter.interf.OnLoadMoreListener;
-import de.mpg.mpdl.ebooksreader.injection.module.glide.ImageLoadConfig;
 import de.mpg.mpdl.ebooksreader.injection.module.glide.ImageLoader;
 import de.mpg.mpdl.ebooksreader.model.dto.DocDTO;
 
@@ -23,7 +22,7 @@ public class SearchResultAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private final int VIEW_TYPE_ITEM = 0;
     private final int VIEW_TYPE_LOADING = 1;
     private boolean isLoading;
-    private int visibleThreshold = 10;
+    private int visibleThreshold = 2;
     private int lastVisibleItem, totalItemCount;
 
     private List<DocDTO> searchResults;

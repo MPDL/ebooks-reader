@@ -4,12 +4,14 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
@@ -17,6 +19,10 @@ import java.util.function.Predicate;
 import de.mpg.mpdl.ebooksreader.activity.R;
 import de.mpg.mpdl.ebooksreader.common.adapter.BookShelfAdapter;
 import de.mpg.mpdl.ebooksreader.model.DownloadedBookModel;
+import de.mpg.mpdl.ebooksreader.model.dto.DocDTO;
+import de.mpg.mpdl.ebooksreader.utils.Data;
+import de.mpg.mpdl.ebooksreader.utils.JacksonUtil;
+import de.mpg.mpdl.ebooksreader.utils.PreferenceUtil;
 
 public class CollectionFragment extends Fragment {
 
@@ -44,39 +50,32 @@ public class CollectionFragment extends Fragment {
         bookshelfRecyclerView = getActivity().findViewById(R.id.bookshelfRecyclerView);
         booksCountTextView = getActivity().findViewById(R.id.booksCountTextView);
 
-        for (int i = 0; i < 10; i++) {
-            bookModelList.add(new DownloadedBookModel("Book No."+(i+1), "Robot", false));
-        }
+        updateBookModelList();
+
         booksCountTextView.setText(bookModelList.size() + " Books");
 
         RecyclerView.LayoutManager bookshelfRecyclerViewLayoutManager = new GridLayoutManager(getActivity(),3);
         bookshelfRecyclerView.setLayoutManager(bookshelfRecyclerViewLayoutManager);
-        bookShelfAdapter = new BookShelfAdapter(bookModelList, false);
+        bookShelfAdapter = new BookShelfAdapter(getActivity(), bookModelList, false);
         bookshelfRecyclerView.setAdapter(bookShelfAdapter);
 
-        editImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finishEditBookshelfImageView.setVisibility(View.VISIBLE);
-                deleteImageView.setVisibility(View.VISIBLE);
-                editImageView.setVisibility(View.GONE);
-                bookShelfAdapter.setInEditMode(true);
-                for (int i = 0; i < bookModelList.size(); i++) {
-                    bookModelList.get(i).setChecked(false);
-                }
-                bookShelfAdapter.notifyDataSetChanged();
+        editImageView.setOnClickListener(view1 -> {
+            finishEditBookshelfImageView.setVisibility(View.VISIBLE);
+            deleteImageView.setVisibility(View.VISIBLE);
+            editImageView.setVisibility(View.GONE);
+            bookShelfAdapter.setInEditMode(true);
+            for (int i = 0; i < bookModelList.size(); i++) {
+                bookModelList.get(i).setChecked(false);
             }
+            bookShelfAdapter.notifyDataSetChanged();
         });
 
-        finishEditBookshelfImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finishEditBookshelfImageView.setVisibility(View.GONE);
-                deleteImageView.setVisibility(View.GONE);
-                editImageView.setVisibility(View.VISIBLE);
-                bookShelfAdapter.setInEditMode(false);
-                bookShelfAdapter.notifyDataSetChanged();
-            }
+        finishEditBookshelfImageView.setOnClickListener(view12 -> {
+            finishEditBookshelfImageView.setVisibility(View.GONE);
+            deleteImageView.setVisibility(View.GONE);
+            editImageView.setVisibility(View.VISIBLE);
+            bookShelfAdapter.setInEditMode(false);
+            bookShelfAdapter.notifyDataSetChanged();
         });
 
         deleteImageView.setOnClickListener(new View.OnClickListener() {
@@ -85,9 +84,26 @@ public class CollectionFragment extends Fragment {
                 bookModelList.removeIf(new Predicate<DownloadedBookModel>() {
                     @Override
                     public boolean test(DownloadedBookModel b) {
+                        if(b.isChecked()) {
+                            String dir = Data.getSaveDir() + "/books/" + b.getIsbn() + ".pdf";
+                            File f = new File(dir);
+                            Log.e("log", f.exists() + "");
+                            Log.e("log", f.getPath());
+                            boolean d0 = f.delete();
+                            Log.w("Delete Check", "File deleted: " + dir + "/myFile " + d0);
+                            List<DocDTO> docDTOList = JacksonUtil.parseDocDTOList(PreferenceUtil.getString(getActivity(), PreferenceUtil.SHARED_PREFERENCES, PreferenceUtil.DOWNLOADED_BOOKS, ""));
+                            docDTOList.removeIf(new Predicate<DocDTO>() {
+                                @Override
+                                public boolean test(DocDTO docDTO) {
+                                    return b.getIsbn().equalsIgnoreCase(docDTO.getIsbn().get(0));
+                                }
+                            });
+                            PreferenceUtil.setString(getActivity(), PreferenceUtil.SHARED_PREFERENCES, PreferenceUtil.DOWNLOADED_BOOKS, JacksonUtil.stringifyDocDTOList(docDTOList));
+                        }
                         return b.isChecked();
                     }
                 });
+
 
                 bookShelfAdapter.notifyDataSetChanged();
                 booksCountTextView.setText(bookModelList.size() + " Books");
@@ -95,5 +111,33 @@ public class CollectionFragment extends Fragment {
         });
 
         super.onViewCreated(view, savedInstanceState);
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            updateBookModelList();
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateBookModelList();
+    }
+
+    private void updateBookModelList() {
+        bookModelList.clear();
+        List<DocDTO> docDTOList = JacksonUtil.parseDocDTOList(PreferenceUtil.getString(getActivity(), PreferenceUtil.SHARED_PREFERENCES, PreferenceUtil.DOWNLOADED_BOOKS, ""));
+        for (DocDTO docDTO : docDTOList) {
+            DownloadedBookModel downloadedBookModel = new DownloadedBookModel(docDTO.getTitle(),
+                    docDTO.getAuthorList()!=null && docDTO.getAuthorList().size() > 0 ? docDTO.getAuthorList().get(0) : "",
+                    docDTO.getIsbn()!=null && docDTO.getIsbn().size() > 0 ? docDTO.getIsbn().get(0) : "", false);
+            bookModelList.add(downloadedBookModel);
+        }
+        if(bookShelfAdapter!=null) {
+            bookShelfAdapter.notifyDataSetChanged();
+        }
     }
 }

@@ -4,6 +4,7 @@
   <configurations>
     <configuration PROFILE_NAME="Debug" CONFIG_NAME="Debug" />
   </configurations>
+  </component>
   <component name="NullableNotNullManager">
     <option name="myDefaultNullable" value="android.support.annotation.Nullable" />
     <option name="myDefaultNotNull" value="android.support.annotation.NonNull" />
