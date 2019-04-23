@@ -55,7 +55,6 @@ public class CollectionFragment extends Fragment {
         booksCountTextView = getActivity().findViewById(R.id.booksCountTextView);
 
         updateBookModelList();
-        booksCountTextView.setText(bookModelList.size() + " Books");
 
         shelfBooksSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -114,7 +113,7 @@ public class CollectionFragment extends Fragment {
                     @Override
                     public boolean test(DownloadedBookModel b) {
                         if(b.isChecked()) {
-                            String dir = Data.getSaveDir() + "/books/" + b.getIsbn() + ".pdf";
+                            String dir = Data.getSaveDir() + "/books/" + b.getIsbn();
                             File f = new File(dir);
                             Log.e("log", f.exists() + "");
                             Log.e("log", f.getPath());
@@ -168,5 +167,6 @@ public class CollectionFragment extends Fragment {
         if(bookShelfAdapter!=null) {
             bookShelfAdapter.notifyDataSetChanged();
         }
+        booksCountTextView.setText(bookModelList.size() + " Books");
     }
 }

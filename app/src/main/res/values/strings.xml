@@ -23,7 +23,7 @@ Epicycles Formula Reading Math Essentials Math in Science Math Refresher MRI Pro
     <string name="author">Author:</string>
     <string name="author_name">Max Lee</string>
 
-    <string name="desc_mpg_ebooks">On this search platform, you can find all e-downloadedBooks that are accessible to all institutes of Max Planck Gesellschaft. Currently, you have access to 650,000 titles from various publishers and e-book providers. The contents are continuously extended and updated. \nClick here for an overview of the included e-downloadedBooks.</string>
+    <string name="desc_mpg_ebooks">On this search platform, you can find all e-downloadedBooks that are accessible to all institutes of Max Planck Gesellschaft. Currently, you have access to 650,000 titles from various publishers and e-book providers. The contents are continuously extended and updated. </string>
 
     <!--CollectionFragment-->
     <string name="my_bookshelf">My Bookshelf</string>

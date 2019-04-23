@@ -1,7 +1,11 @@
 package de.mpg.mpdl.ebooksreader.activity;
 
 import android.Manifest;
+import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -26,8 +30,11 @@ import com.tonyodev.fetch2core.Reason;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
 import java.util.List;
 import java.util.Set;
+
+import de.mpg.mpdl.ebooksreader.DocumentActivity;
 import de.mpg.mpdl.ebooksreader.utils.Data;
 import de.mpg.mpdl.ebooksreader.utils.PreferenceUtil;
 import timber.log.Timber;
@@ -62,6 +69,7 @@ public class BookDescriptionActivity extends BaseCompatActivity implements Fetch
     ProgressBar Progressbar;
 
     DocDTO docDTO;
+    Context context = this;
 
     @Override
     protected int getLayoutId() {
@@ -120,6 +128,13 @@ public class BookDescriptionActivity extends BaseCompatActivity implements Fetch
         }
 
         lastProgress = 0;
+
+        if (null == docDTO.getIsbn() || docDTO.getIsbn().size() == 0) return;
+        String dir = Data.getSaveDir() + "/books/" + docDTO.getIsbn().get(0);
+        File file = new File(dir);
+        if (file.exists()) {
+            hideDownloadProgressBar();
+        }
     }
 
     @Override
@@ -178,7 +193,7 @@ public class BookDescriptionActivity extends BaseCompatActivity implements Fetch
         
         final String url = docDTO.getUrlPdfStr();
         if (null != docDTO.getIsbn() && docDTO.getIsbn().size()>0) {
-            final String filePath = Data.getSaveDir() + "/books/" + docDTO.getIsbn().get(0) + ".pdf";
+            final String filePath = Data.getSaveDir() + "/books/" + docDTO.getIsbn().get(0);
             request = new Request(url, filePath);
         } else {
             showMessage("ISBN of the book not found.");
@@ -232,7 +247,6 @@ public class BookDescriptionActivity extends BaseCompatActivity implements Fetch
     private void updateUIWithProgress() {
         final int progress = getDownloadProgress();
         Progressbar.setProgress(progress);
-        if (progress == 100) downloadButton.setVisibility(View.GONE);
     }
 
     private int getDownloadProgress() {
@@ -247,6 +261,15 @@ public class BookDescriptionActivity extends BaseCompatActivity implements Fetch
         return currentProgress;
     }
 
+    private void hideDownloadProgressBar() {
+        downloadButton.setText("Downloaded");
+        downloadButton.setTextColor(Color.BLACK);
+        downloadButton.setEnabled(false);
+        downloadButton.setBackgroundColor(Color.TRANSPARENT);
+        progressTextView.setVisibility(View.INVISIBLE);
+        Progressbar.setVisibility(View.INVISIBLE);
+    }
+
     private final FetchListener fetchListener = new AbstractFetchListener() {
         @Override
         public void onCompleted(@NotNull Download download) {
@@ -255,15 +278,14 @@ public class BookDescriptionActivity extends BaseCompatActivity implements Fetch
             lastProgressId = download.getId();
             updateUIWithProgress();
 
+            hideDownloadProgressBar();
             List<DocDTO> docDTOList = JacksonUtil.parseDocDTOList(PreferenceUtil.getString(getApplicationContext(), PreferenceUtil.SHARED_PREFERENCES, PreferenceUtil.DOWNLOADED_BOOKS, ""));
             for (DocDTO downloadedDocDTO : docDTOList) {
                 if (downloadedDocDTO.getUrlPdfStr().equalsIgnoreCase(docDTO.getUrlPdfStr())) return;
             }
 
-            docDTOList.add(docDTO);
+            docDTOList.add(0, docDTO);
             PreferenceUtil.setString(getApplicationContext(), PreferenceUtil.SHARED_PREFERENCES, PreferenceUtil.DOWNLOADED_BOOKS, JacksonUtil.stringifyDocDTOList(docDTOList));
-
-            Log.e("onCompleted", JacksonUtil.parseDocDTOList(PreferenceUtil.getString(getApplicationContext(), PreferenceUtil.SHARED_PREFERENCES, PreferenceUtil.DOWNLOADED_BOOKS, "")).size() + "");
         }
 
         @Override

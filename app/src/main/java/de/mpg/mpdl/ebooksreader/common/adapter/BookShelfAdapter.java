@@ -81,31 +81,14 @@ public class BookShelfAdapter extends RecyclerView.Adapter<BookShelfAdapter.Book
         holder.downloadedBookCoverImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                File file = new File(Data.getSaveDir() + "/books/" + downloadedBooks.get(position).getIsbn() + ".pdf");
-                if (!file.isFile())
-                    return;
+                openBook(position);
+            }
+        });
 
-                List<DocDTO> docDTOList = JacksonUtil.parseDocDTOList(PreferenceUtil.getString(context, PreferenceUtil.SHARED_PREFERENCES, PreferenceUtil.DOWNLOADED_BOOKS, ""));
-                int index = -1;
-                for (int i = 0; i < docDTOList.size(); i++) {
-                    if ( null != docDTOList && docDTOList.size() > 0 && docDTOList.get(i).getIsbn().get(0).equalsIgnoreCase(downloadedBooks.get(position).getIsbn())) {
-                        index = i;
-                        break;
-                    }
-                }
-
-                if (index == -1) return;
-
-                DocDTO docDTO = docDTOList.get(index);
-                docDTOList.remove(index);
-                docDTOList.add(0, docDTO);
-
-                PreferenceUtil.setString(context, PreferenceUtil.SHARED_PREFERENCES, PreferenceUtil.DOWNLOADED_BOOKS, JacksonUtil.stringifyDocDTOList(docDTOList));
-
-                Intent intent = new Intent(context, DocumentActivity.class);
-                intent.setAction(Intent.ACTION_VIEW);
-                intent.setData(Uri.fromFile(file));
-                context.startActivity(intent);
+        holder.downloadedBookTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openBook(position);
             }
         });
 
@@ -123,5 +106,33 @@ public class BookShelfAdapter extends RecyclerView.Adapter<BookShelfAdapter.Book
 
     public void setInEditMode(boolean inEditMode) {
         this.inEditMode = inEditMode;
+    }
+
+    private void openBook(int position) {
+        File file = new File(Data.getSaveDir() + "/books/" + downloadedBooks.get(position).getIsbn());
+        if (!file.isFile())
+            return;
+
+        List<DocDTO> docDTOList = JacksonUtil.parseDocDTOList(PreferenceUtil.getString(context, PreferenceUtil.SHARED_PREFERENCES, PreferenceUtil.DOWNLOADED_BOOKS, ""));
+        int index = -1;
+        for (int i = 0; i < docDTOList.size(); i++) {
+            if ( null != docDTOList && docDTOList.size() > 0 && docDTOList.get(i).getIsbn().get(0).equalsIgnoreCase(downloadedBooks.get(position).getIsbn())) {
+                index = i;
+                break;
+            }
+        }
+
+        if (index == -1) return;
+
+        DocDTO docDTO = docDTOList.get(index);
+        docDTOList.remove(index);
+        docDTOList.add(0, docDTO);
+
+        PreferenceUtil.setString(context, PreferenceUtil.SHARED_PREFERENCES, PreferenceUtil.DOWNLOADED_BOOKS, JacksonUtil.stringifyDocDTOList(docDTOList));
+
+        Intent intent = new Intent(context, DocumentActivity.class);
+        intent.setAction(Intent.ACTION_VIEW);
+        intent.setData(Uri.fromFile(file));
+        context.startActivity(intent);
     }
 }

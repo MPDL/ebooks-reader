@@ -10,10 +10,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import de.mpg.mpdl.ebooksreader.activity.BookDescriptionActivity;
 import de.mpg.mpdl.ebooksreader.activity.R;
 import de.mpg.mpdl.ebooksreader.base.BaseActivity;
@@ -132,8 +130,6 @@ public class SearchFragment extends BaseMvpFragment<SearchFragmentPresenter> imp
                 searchResultAdapter.notifyDataSetChanged();
                 return false;
             }
-
-
         });
 
         searchResultRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
