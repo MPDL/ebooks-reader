@@ -668,7 +668,7 @@ public class DocumentActivity extends Activity
 
 	@Override
 	public void onBackPressed() {
-		if (!mDocView.popHistory())
+		//if (!mDocView.popHistory())
 			super.onBackPressed();
 	}
 }
