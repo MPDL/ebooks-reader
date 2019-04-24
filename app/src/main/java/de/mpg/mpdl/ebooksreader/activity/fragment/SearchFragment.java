@@ -1,8 +1,10 @@
 package de.mpg.mpdl.ebooksreader.activity.fragment;
 
 import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -27,6 +29,9 @@ import de.mpg.mpdl.ebooksreader.mvp.presenter.SearchFragmentPresenter;
 import de.mpg.mpdl.ebooksreader.mvp.view.SearchFragmentView;
 import de.mpg.mpdl.ebooksreader.utils.JacksonUtil;
 import de.mpg.mpdl.ebooksreader.utils.PropertiesReader;
+import de.mpg.mpdl.ebooksreader.utils.SpacesItemDecoration;
+
+import static android.support.v7.widget.DividerItemDecoration.*;
 
 public class SearchFragment extends BaseMvpFragment<SearchFragmentPresenter> implements SearchFragmentView, BookClickListener {
 
@@ -133,6 +138,7 @@ public class SearchFragment extends BaseMvpFragment<SearchFragmentPresenter> imp
         });
 
         searchResultRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        searchResultRecyclerView.addItemDecoration(new SpacesItemDecoration(20));
         searchResultAdapter = new SearchResultAdapter(searchResultRecyclerView, searchResultList);
         searchResultAdapter.setClickListener(this);
         searchResultRecyclerView.setAdapter(searchResultAdapter);
@@ -190,3 +196,5 @@ public class SearchFragment extends BaseMvpFragment<SearchFragmentPresenter> imp
         //TODO: error message
     }
 }
+
+
