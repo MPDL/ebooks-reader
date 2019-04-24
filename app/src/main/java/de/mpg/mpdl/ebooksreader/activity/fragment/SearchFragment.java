@@ -121,7 +121,7 @@ public class SearchFragment extends BaseMvpFragment<SearchFragmentPresenter> imp
                 index = 0;
                 queryStr = query;
                 if (!queryStr.isEmpty()) {
-                    mPresenter.selectDocs(HASH_CREDENTIAL, "on", "allfields:" + query + " prodcode_str_mv:SBA OR prodcode_str_mv:Springer OR prodcode_str_mv:OAPEN", index, "json", (BaseActivity) getActivity());
+                    mPresenter.selectDocs(HASH_CREDENTIAL, "on", "allfields:" + query + " AND (prodcode_str_mv:SBA OR prodcode_str_mv:Springer OR prodcode_str_mv:OAPEN)", index, "json", (BaseActivity) getActivity());
                 }
                 return true;
             }
@@ -146,7 +146,7 @@ public class SearchFragment extends BaseMvpFragment<SearchFragmentPresenter> imp
             @Override
             public void onLoadMore() {
                 if (index <= 49 && !queryStr.isEmpty()) {
-                    mPresenter.selectDocs(HASH_CREDENTIAL, "on", "allfields:" + queryStr + " prodcode_str_mv:SBA OR prodcode_str_mv:Springer OR prodcode_str_mv:OAPEN", index, "json", (BaseActivity) getActivity());
+                    mPresenter.selectDocs(HASH_CREDENTIAL, "on", "allfields:" + queryStr + " AND (prodcode_str_mv:SBA OR prodcode_str_mv:Springer OR prodcode_str_mv:OAPEN)", index, "json", (BaseActivity) getActivity());
                 }
             }
         });
