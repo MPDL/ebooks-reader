@@ -1,11 +1,8 @@
 package de.mpg.mpdl.ebooksreader.activity;
 
 import android.Manifest;
-import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -30,11 +27,9 @@ import com.tonyodev.fetch2core.Reason;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
 import java.util.List;
 import java.util.Set;
 
-import de.mpg.mpdl.ebooksreader.DocumentActivity;
 import de.mpg.mpdl.ebooksreader.utils.Data;
 import de.mpg.mpdl.ebooksreader.utils.PreferenceUtil;
 import timber.log.Timber;
@@ -69,7 +64,6 @@ public class BookDescriptionActivity extends BaseCompatActivity implements Fetch
     ProgressBar Progressbar;
 
     DocDTO docDTO;
-    Context context = this;
 
     @Override
     protected int getLayoutId() {
@@ -127,13 +121,14 @@ public class BookDescriptionActivity extends BaseCompatActivity implements Fetch
             detailPublisherTextView.setText(docDTO.getPublisher().get(0));
         }
 
-        lastProgress = 0;
-
         if (null == docDTO.getIsbn() || docDTO.getIsbn().size() == 0) return;
-        String dir = Data.getSaveDir() + "/books/" + docDTO.getIsbn().get(0);
-        File file = new File(dir);
-        if (file.exists()) {
-            hideDownloadProgressBar();
+
+        List<DocDTO> docDTOList = JacksonUtil.parseDocDTOList(PreferenceUtil.getString(getApplicationContext(), PreferenceUtil.SHARED_PREFERENCES, PreferenceUtil.DOWNLOADED_BOOKS, ""));
+        for (DocDTO downloadedDocDTO : docDTOList) {
+            if (downloadedDocDTO.getUrlPdfStr().equalsIgnoreCase(docDTO.getUrlPdfStr())) {
+                hideDownloadProgressBar();
+                break;
+            }
         }
     }
 
