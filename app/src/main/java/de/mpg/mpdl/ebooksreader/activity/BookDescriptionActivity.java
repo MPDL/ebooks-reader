@@ -125,7 +125,8 @@ public class BookDescriptionActivity extends BaseCompatActivity implements Fetch
 
         lastProgress = 0;
 
-        Log.e("BookDescriptionActivity", JacksonUtil.stringifyDocDTO(docDTO));
+        Log.e("WANG", docDTO.getUrlPdfStr());
+        Log.e("WANG", JacksonUtil.stringifyDocDTO(docDTO));
 
         List<DocDTO> docDTOList = JacksonUtil.parseDocDTOList(PreferenceUtil.getString(getApplicationContext(), PreferenceUtil.SHARED_PREFERENCES, PreferenceUtil.DOWNLOADED_BOOKS, ""));
         for (DocDTO downloadedDocDTO : docDTOList) {
@@ -139,8 +140,11 @@ public class BookDescriptionActivity extends BaseCompatActivity implements Fetch
     @Override
     protected void onResume() {
         super.onResume();
-        lastProgress = 0;
-        Progressbar.setProgress(lastProgress);
+        if (lastProgress!=0){
+            Progressbar.setProgress(lastProgress);
+            final String progressString = getResources().getString(R.string.percent_progress, lastProgress);
+            progressTextView.setText(progressString);
+        }
     }
 
     @Override
@@ -182,7 +186,7 @@ public class BookDescriptionActivity extends BaseCompatActivity implements Fetch
 
     private void enqueueDownload() {
         Log.i(TAG, "enqueueDownload: ");
-        if (null == docDTO.getUrlPdfStr() || docDTO.getUrlPdfStr().equalsIgnoreCase("")) {
+        if (null == docDTO.getUrlPdfStr() && docDTO.getUrlPdfStr().equalsIgnoreCase("")) {
             showMessage("Download url not found.");
             return;
         }
