@@ -181,6 +181,7 @@ public class SearchFragment extends BaseMvpFragment<SearchFragmentPresenter> imp
             }
             if (docDTO !=null && docDTO.getUrlPdfStr() == null && docDTO.getUrls() != null && docDTO.getUrls().size() > 0) {
                 docDTO.setUrlPdfStr(docDTO.getUrls().get(0).replace("http://dx.doi.org/", "https://link.springer.com/content/pdf/"));
+                docDTO.setUrlPdfStr(docDTO.getUrls().get(0).replace("https://doi.org/", "https://link.springer.com/content/pdf/"));
             }
         }
 
