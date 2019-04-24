@@ -123,6 +123,8 @@ public class BookDescriptionActivity extends BaseCompatActivity implements Fetch
 
         if (null == docDTO.getIsbn() || docDTO.getIsbn().size() == 0) return;
 
+        lastProgress = 0;
+
         List<DocDTO> docDTOList = JacksonUtil.parseDocDTOList(PreferenceUtil.getString(getApplicationContext(), PreferenceUtil.SHARED_PREFERENCES, PreferenceUtil.DOWNLOADED_BOOKS, ""));
         for (DocDTO downloadedDocDTO : docDTOList) {
             if (downloadedDocDTO.getUrlPdfStr().equalsIgnoreCase(docDTO.getUrlPdfStr())) {
