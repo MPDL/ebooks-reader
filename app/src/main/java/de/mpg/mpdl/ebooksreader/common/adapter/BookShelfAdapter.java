@@ -81,14 +81,18 @@ public class BookShelfAdapter extends RecyclerView.Adapter<BookShelfAdapter.Book
         holder.downloadedBookCoverImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openBook(position);
+                if (!inEditMode) {
+                    openBook(position);
+                }
             }
         });
 
         holder.downloadedBookTitle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openBook(position);
+                if (!inEditMode) {
+                    openBook(position);
+                }
             }
         });
 
