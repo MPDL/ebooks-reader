@@ -1,10 +1,8 @@
 package de.mpg.mpdl.ebooksreader.activity.fragment;
 
 import android.content.Intent;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -31,10 +29,7 @@ import de.mpg.mpdl.ebooksreader.utils.JacksonUtil;
 import de.mpg.mpdl.ebooksreader.utils.PropertiesReader;
 import de.mpg.mpdl.ebooksreader.utils.SpacesItemDecoration;
 
-import static android.support.v7.widget.DividerItemDecoration.*;
-
 public class SearchFragment extends BaseMvpFragment<SearchFragmentPresenter> implements SearchFragmentView, BookClickListener {
-
 
     String HASH_CREDENTIAL = "";
     String queryStr = "";
@@ -117,8 +112,10 @@ public class SearchFragment extends BaseMvpFragment<SearchFragmentPresenter> imp
         ebooksSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                searchResultList.clear();
                 index = 0;
+                ebooksSearchView.clearFocus();
+                searchResultList.clear();
+                searchResultAdapter.notifyDataSetChanged();
                 queryStr = query;
                 if (!queryStr.isEmpty()) {
                     mPresenter.selectDocs(HASH_CREDENTIAL, "on", "allfields:" + query + " AND (prodcode_str_mv:SBA OR prodcode_str_mv:Springer OR prodcode_str_mv:OAPEN)", index, "json", (BaseActivity) getActivity());
@@ -130,7 +127,6 @@ public class SearchFragment extends BaseMvpFragment<SearchFragmentPresenter> imp
             public boolean onQueryTextChange(String newText) {
                 if(newText == null || newText.isEmpty()) {
                     searchResultList.clear();
-                    queryStr = "";
                 }
                 searchResultAdapter.notifyDataSetChanged();
                 return false;
@@ -145,6 +141,7 @@ public class SearchFragment extends BaseMvpFragment<SearchFragmentPresenter> imp
         searchResultAdapter.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore() {
+                index += 10;
                 if (index <= 49 && !queryStr.isEmpty()) {
                     mPresenter.selectDocs(HASH_CREDENTIAL, "on", "allfields:" + queryStr + " AND (prodcode_str_mv:SBA OR prodcode_str_mv:Springer OR prodcode_str_mv:OAPEN)", index, "json", (BaseActivity) getActivity());
                 }
@@ -173,7 +170,7 @@ public class SearchFragment extends BaseMvpFragment<SearchFragmentPresenter> imp
 
     @Override
     public void successfulSelectDocs(QueryResponseDTO queryResponseDTO) {
-        searchResultAdapter.notifyItemRemoved(searchResultList.size());
+        searchResultAdapter.notifyDataSetChanged();
         List<DocDTO> moreDocDTOs = queryResponseDTO.getResponseContentDTO().getDocs();
         for (DocDTO docDTO : moreDocDTOs) {
             if (docDTO != null && docDTO.getIsbn() != null) {
@@ -186,15 +183,13 @@ public class SearchFragment extends BaseMvpFragment<SearchFragmentPresenter> imp
         }
 
         searchResultList.addAll(moreDocDTOs);
-
-        index += 10;
         searchResultAdapter.notifyDataSetChanged();
         searchResultAdapter.setLoaded();
     }
 
     @Override
     public void failedSelectDocs(Throwable e) {
-        //TODO: error message
+        searchResultAdapter.setLoaded();
     }
 }
 
