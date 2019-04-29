@@ -27,6 +27,7 @@
         android:layout_centerHorizontal="true"
         android:gravity="center"
         android:text="@string/my_bookshelf"
+        android:textSize="20sp"
         android:textStyle="bold" />
 
     <ImageView

@@ -72,7 +72,7 @@ public class CollectionFragment extends Fragment {
                 });
 
                 bookShelfAdapter.notifyDataSetChanged();
-                booksCountTextView.setText(bookModelList.size() + " Books");
+                booksCountTextView.setText(bookModelList.size() <= 1 ? bookModelList.size() + " Book" : bookModelList.size() + " Books");
                 return false;
             }
 
@@ -80,7 +80,7 @@ public class CollectionFragment extends Fragment {
             public boolean onQueryTextChange(String newText) {
                 if(newText == null || newText.isEmpty()) {
                     updateBookModelList();
-                    booksCountTextView.setText(bookModelList.size() + " Books");
+                    booksCountTextView.setText(bookModelList.size() <= 1 ? bookModelList.size() + " Book" : bookModelList.size() + " Books");
                 }
                 return false;
             }
@@ -135,7 +135,7 @@ public class CollectionFragment extends Fragment {
 
 
                 bookShelfAdapter.notifyDataSetChanged();
-                booksCountTextView.setText(bookModelList.size() + " Books");
+                booksCountTextView.setText(bookModelList.size() <= 1 ? bookModelList.size() + " Book" : bookModelList.size() + " Books");
             }
         });
 
@@ -168,6 +168,6 @@ public class CollectionFragment extends Fragment {
         if(bookShelfAdapter!=null) {
             bookShelfAdapter.notifyDataSetChanged();
         }
-        booksCountTextView.setText(bookModelList.size() + " Books");
+        booksCountTextView.setText(bookModelList.size() <= 1 ? bookModelList.size() + " Book" : bookModelList.size() + " Books");
     }
 }
