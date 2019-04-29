@@ -91,7 +91,6 @@
                 android:layout_marginStart="20.5dp"
                 android:layout_below="@id/detailAbstractLabel"
                 android:layout_marginTop="12.5dp"
-                android:text="@string/introduction_content"
                 android:textSize="18sp" />
 
             <TextView
@@ -101,7 +100,6 @@
                 android:layout_toEndOf="@id/detailCoverImageView"
                 android:layout_marginStart="20.5dp"
                 android:layout_marginTop="24.5dp"
-                android:text="@string/bookname"
                 android:textSize="23sp"
                 android:textStyle="bold"
                 android:textColor="#2F4F4F"
@@ -115,7 +113,6 @@
                 android:layout_marginStart="20.5dp"
                 android:layout_below="@id/detailTitleTextView"
                 android:layout_marginTop="8.5dp"
-                android:text="@string/book_summary"
                 android:textSize="13sp"/>
 
             <TextView
@@ -138,7 +135,6 @@
                 android:layout_marginStart="20.5dp"
                 android:layout_below="@id/detailSubtitleTextView"
                 android:layout_marginTop="32.5dp"
-                android:text="@string/author_name"
                 android:textSize="14sp"
                 android:textColor="@color/colorBlack"/>
 

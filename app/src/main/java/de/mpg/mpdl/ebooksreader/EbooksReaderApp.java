@@ -4,10 +4,10 @@ import android.content.Context;
 
 import com.tonyodev.fetch2.Fetch;
 import com.tonyodev.fetch2.FetchConfiguration;
-import com.tonyodev.fetch2.HttpUrlConnectionDownloader;
-import com.tonyodev.fetch2core.Downloader;
+import com.tonyodev.fetch2okhttp.OkHttpDownloader;
 
 import de.mpg.mpdl.ebooksreader.base.BaseApplication;
+import okhttp3.OkHttpClient;
 
 public class EbooksReaderApp extends BaseApplication {
     private static Context mContext;
@@ -16,12 +16,11 @@ public class EbooksReaderApp extends BaseApplication {
     public void onCreate() {
         super.onCreate();
         mContext = getApplicationContext();
+        OkHttpClient okHttpClient = new OkHttpClient.Builder().build();
         final FetchConfiguration fetchConfiguration = new FetchConfiguration.Builder(this)
                 .enableRetryOnNetworkGain(true)
                 .setDownloadConcurrentLimit(3)
-                .setHttpDownloader(new HttpUrlConnectionDownloader(Downloader.FileDownloaderType.PARALLEL))
-                // TODO: OR OkHttpDownloader
-                //.setHttpDownloader(getOkHttpDownloader())
+                .setHttpDownloader(new OkHttpDownloader(okHttpClient))
                 .build();
         Fetch.Impl.setDefaultInstanceConfiguration(fetchConfiguration);
     }

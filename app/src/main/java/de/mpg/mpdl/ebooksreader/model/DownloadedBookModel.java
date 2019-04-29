@@ -5,15 +5,17 @@ public class DownloadedBookModel {
     private String author;
     private String isbn;
     private boolean isChecked;
+    private int downloadId;
 
     public DownloadedBookModel() {
     }
 
-    public DownloadedBookModel(String title, String author, String isbn, boolean isChecked) {
+    public DownloadedBookModel(String title, String author, String isbn, boolean isChecked, int downloadId) {
         this.title = title;
         this.author = author;
         this.isbn = isbn;
         this.isChecked = isChecked;
+        this.downloadId = downloadId;
     }
 
     public String getTitle() {
@@ -46,5 +48,13 @@ public class DownloadedBookModel {
 
     public void setIsbn(String isbn) {
         this.isbn = isbn;
+    }
+
+    public int getDownloadId() {
+        return downloadId;
+    }
+
+    public void setDownloadId(int downloadId) {
+        this.downloadId = downloadId;
     }
 }

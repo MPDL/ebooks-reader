@@ -23,11 +23,12 @@ public class DocDTO {
     List<String> publisher;
 
     String coverUrl;
+    int downloadId;
 
     public DocDTO() {
     }
 
-    public DocDTO(String id, String title, String subTitle, List<String> authorList, String urlPdfStr, List<String> urls, String description, List<String> isbn, List<String> publishDate, List<String> publisher, String coverUrl) {
+    public DocDTO(String id, String title, String subTitle, List<String> authorList, String urlPdfStr, List<String> urls, String description, List<String> isbn, List<String> publishDate, List<String> publisher, String coverUrl, int downloadId) {
         this.id = id;
         this.title = title;
         this.subTitle = subTitle;
@@ -39,6 +40,7 @@ public class DocDTO {
         this.publishDate = publishDate;
         this.publisher = publisher;
         this.coverUrl = coverUrl;
+        this.downloadId = downloadId;
     }
 
     public String getId() {
@@ -127,5 +129,13 @@ public class DocDTO {
 
     public void setPublisher(List<String> publisher) {
         this.publisher = publisher;
+    }
+
+    public int getDownloadId() {
+        return downloadId;
+    }
+
+    public void setDownloadId(int downloadId) {
+        this.downloadId = downloadId;
     }
 }
