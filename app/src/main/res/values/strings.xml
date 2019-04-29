@@ -11,7 +11,7 @@
     <string name="download">Download</string>
     <string name="author">Author:</string>
 
-    <string name="desc_mpg_ebooks">On this search platform, you can find all e-downloadedBooks that are accessible to all institutes of Max Planck Gesellschaft. Currently, you have access to 650,000 titles from various publishers and e-book providers. The contents are continuously extended and updated. </string>
+    <string name="desc_mpg_ebooks">On this search platform, you can find all e-downloaded books that are accessible to all institutes of Max Planck Gesellschaft. Currently, you have access to 118,526 titles from Springer and 5,716 titles from OAPEN. The contents are continuously extended and updated. </string>
 
     <!--CollectionFragment-->
     <string name="my_bookshelf">My Bookshelf</string>
@@ -40,4 +40,25 @@
     <string name="permission_not_enabled">Please enable the Write External Storage Permission</string>
     <string name="wifiOnly">WiFi Only</string>
 
+    <!--user-->
+    <string name="user_name">Martin Becker</string>
+    <string name="edit_profile">&gt;</string>
+    <string name="motto">Never put off what you can read today until tomorrow !</string>
+    <string name="following">Followings:  190</string>
+    <string name="follower">Followers:  200</string>
+    <string name="seperator">|</string>
+    <string name="ranking">Ranking Board</string>
+    <string name="rankingcontent1">This week, you have read</string>
+    <string name="rankingcontent2">6</string>
+    <string name="rankingcontent3">hours.</string>
+    <string name="notes">My Notes</string>
+    <string name="notes1">Notes</string>
+    <string name="number_notes">36</string>
+    <string name="comments">comments</string>
+    <string name="number_comments">20</string>
+    <string name="likes">likes</string>
+    <string name="number_likes">55</string>
+    <string name="lists">My Book Lists</string>
+    <string name="lists1">Book Lists</string>
+    <string name="number_lists">3</string>
 </resources>

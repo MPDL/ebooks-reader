@@ -60,6 +60,7 @@ public class BookDescriptionActivity extends BaseCompatActivity implements Fetch
     TextView detailAuthorTextView;
     TextView detailPublishDateTextView;
     TextView detailPublisherTextView;
+    TextView detailIsbnTextView;
     Button downloadButton;
     ProgressBar Progressbar;
 
@@ -90,6 +91,7 @@ public class BookDescriptionActivity extends BaseCompatActivity implements Fetch
         detailAuthorTextView = findViewById(R.id.detailAuthorTextView);
         detailPublishDateTextView = findViewById(R.id.detailPublishDateTextView);
         detailPublisherTextView = findViewById(R.id.detailPublisherTextView);
+        detailIsbnTextView = findViewById(R.id.detailIsbnTextView);
 
         if (null != docDTO.getCoverUrl()) {
             ImageLoader.loadStringRes(detailCoverImageView, docDTO.getCoverUrl(), ImageLoader.defConfig, null);
@@ -121,8 +123,10 @@ public class BookDescriptionActivity extends BaseCompatActivity implements Fetch
             detailPublisherTextView.setText(docDTO.getPublisher().get(0));
         }
 
-        if (null == docDTO.getIsbn() || docDTO.getIsbn().size() == 0) return;
-
+        if (null == docDTO.getIsbn() || docDTO.getIsbn().size() == 0)
+            return;
+        else
+            detailIsbnTextView.setText("ISBN:  " + docDTO.getIsbn());
         lastProgress = 0;
 
         Log.e("BookDescriptionActivity", JacksonUtil.stringifyDocDTO(docDTO));
