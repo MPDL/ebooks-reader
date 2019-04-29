@@ -161,8 +161,10 @@ public class SearchFragment extends BaseMvpFragment<SearchFragmentPresenter> imp
     public void onResume() {
         super.onResume();
         index = 0;
+        queryStr = "";
         if (ebooksSearchView != null) {
             ebooksSearchView.clearFocus();
+            ebooksSearchView.setQuery(null, false);
         }
     }
 
