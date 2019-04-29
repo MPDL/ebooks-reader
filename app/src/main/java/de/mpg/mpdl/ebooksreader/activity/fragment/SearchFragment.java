@@ -158,6 +158,17 @@ public class SearchFragment extends BaseMvpFragment<SearchFragmentPresenter> imp
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        queryStr = "";
+        searchResultList.clear();
+        if (ebooksSearchView != null) {
+            ebooksSearchView.setQuery("", false);
+            ebooksSearchView.clearFocus();
+        }
+    }
+
+    @Override
     public void onItemClick(View view, int position) {
         if (position == -1) return;
         DocDTO docDTO = searchResultList.get(position);
