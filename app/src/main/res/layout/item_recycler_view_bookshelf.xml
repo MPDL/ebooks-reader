@@ -17,8 +17,8 @@
         android:id="@+id/editBookCheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/downloadedBookCoverImageView"
-        android:layout_alignEnd="@id/downloadedBookCoverImageView"
+        android:layout_marginHorizontal="127dp"
+        android:layout_marginTop="160dp"
         android:buttonTint="@color/colorPrimary" />
 
     <TextView
