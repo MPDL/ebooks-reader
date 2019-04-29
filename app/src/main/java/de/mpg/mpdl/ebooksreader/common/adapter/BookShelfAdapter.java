@@ -58,6 +58,7 @@ public class BookShelfAdapter extends RecyclerView.Adapter<BookShelfAdapter.Book
     @Override
     public void onBindViewHolder(BookShelfViewHolder holder, final int position) {
         holder.downloadedBookTitle.setText(downloadedBooks.get(position).getTitle());
+        holder.editBookCheckBox.setOnCheckedChangeListener(null);
         if (inEditMode) {
             if (downloadedBooks.get(position).isChecked()) {
                 holder.editBookCheckBox.setChecked(true);

@@ -280,6 +280,7 @@ public class BookDescriptionActivity extends BaseCompatActivity implements Fetch
                 if (downloadedDocDTO.getUrlPdfStr().equalsIgnoreCase(docDTO.getUrlPdfStr())) return;
             }
 
+            docDTO.setDownloadId(download.getId());
             docDTOList.add(0, docDTO);
             PreferenceUtil.setString(getApplicationContext(), PreferenceUtil.SHARED_PREFERENCES, PreferenceUtil.DOWNLOADED_BOOKS, JacksonUtil.stringifyDocDTOList(docDTOList));
         }

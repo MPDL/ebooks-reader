@@ -12,6 +12,8 @@ import android.widget.ImageView;
 import android.support.v7.widget.SearchView;
 import android.widget.TextView;
 
+import com.tonyodev.fetch2.Fetch;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +38,8 @@ public class CollectionFragment extends Fragment {
     RecyclerView bookshelfRecyclerView;
     BookShelfAdapter bookShelfAdapter;
     List<DownloadedBookModel> bookModelList = new ArrayList<>();
+    Fetch fetch;
+
     public CollectionFragment() {
     }
 
@@ -113,12 +117,9 @@ public class CollectionFragment extends Fragment {
                     @Override
                     public boolean test(DownloadedBookModel b) {
                         if(b.isChecked()) {
-                            String dir = Data.getSaveDir() + "/books/" + b.getIsbn();
-                            File f = new File(dir);
-                            Log.e("log", f.exists() + "");
-                            Log.e("log", f.getPath());
-                            boolean d0 = f.delete();
-                            Log.w("Delete Check", "File deleted: " + dir + "/myFile " + d0);
+                            fetch = Fetch.Impl.getDefaultInstance();
+                            fetch.delete(b.getDownloadId());
+
                             List<DocDTO> docDTOList = JacksonUtil.parseDocDTOList(PreferenceUtil.getString(getActivity(), PreferenceUtil.SHARED_PREFERENCES, PreferenceUtil.DOWNLOADED_BOOKS, ""));
                             docDTOList.removeIf(new Predicate<DocDTO>() {
                                 @Override
@@ -161,7 +162,7 @@ public class CollectionFragment extends Fragment {
         for (DocDTO docDTO : docDTOList) {
             DownloadedBookModel downloadedBookModel = new DownloadedBookModel(docDTO.getTitle(),
                     docDTO.getAuthorList()!=null && docDTO.getAuthorList().size() > 0 ? docDTO.getAuthorList().get(0) : "",
-                    docDTO.getIsbn()!=null && docDTO.getIsbn().size() > 0 ? docDTO.getIsbn().get(0) : "", false);
+                    docDTO.getIsbn()!=null && docDTO.getIsbn().size() > 0 ? docDTO.getIsbn().get(0) : "", false, docDTO.getDownloadId());
             bookModelList.add(downloadedBookModel);
         }
         if(bookShelfAdapter!=null) {

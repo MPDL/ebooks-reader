@@ -6,22 +6,10 @@
 
     <string name="search_hint">SEARCH</string>
     <string name="introduction">Introduction:</string>
-    <string name="introduction_content">Accessible and comprehensive, this guide is an indispensable tool for anyone in the sciences – new and established researchers, students and scientists – looking either to refresh their math skills or to prepare for the broad range of math, statistical and data-related challenges they are likely to encounter in their work or studies.
-In addition to helping scientists improve their knowledge of key mathematical concepts, this unique book will help readers:
-·                     Read mathematical symbols
-·                     Understand formulas, data or statistical information
-·                     Determine medication equivalents
-·                     Analyze neuroimaging
- Mathematical concepts are presented alongside illustrative and useful real-world scien­tific examples and are further clarified through practical pen-and-paper exercises. Whether you are a student encountering high-level mathematics in your research or a seasoned scientist looking to refresh or strengthen your understanding, Math for Scientists: Refreshing the Essentials will be the book you reach for again and again.
-Keywords
-Epicycles Formula Reading Math Essentials Math in Science Math Refresher MRI Processing Neuropsychological Questionnaires Spectral Decomposition Tremor Analysis</string>
 
     <string name="label_mpg_ebooks">MPG.eBooks</string>
     <string name="download">Download</string>
-    <string name="bookname">The Scientist as Philosopher</string>
-    <string name="book_summary">Philosophical Consequences of Great Scientific Discoveries</string>
     <string name="author">Author:</string>
-    <string name="author_name"></string>
 
     <string name="desc_mpg_ebooks">On this search platform, you can find all e-downloadedBooks that are accessible to all institutes of Max Planck Gesellschaft. Currently, you have access to 650,000 titles from various publishers and e-book providers. The contents are continuously extended and updated. </string>
 
