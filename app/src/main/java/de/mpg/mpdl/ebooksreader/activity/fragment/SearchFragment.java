@@ -27,7 +27,6 @@ import de.mpg.mpdl.ebooksreader.mvp.presenter.SearchFragmentPresenter;
 import de.mpg.mpdl.ebooksreader.mvp.view.SearchFragmentView;
 import de.mpg.mpdl.ebooksreader.utils.JacksonUtil;
 import de.mpg.mpdl.ebooksreader.utils.PropertiesReader;
-import de.mpg.mpdl.ebooksreader.utils.SpacesItemDecoration;
 
 public class SearchFragment extends BaseMvpFragment<SearchFragmentPresenter> implements SearchFragmentView, BookClickListener {
 
@@ -88,6 +87,7 @@ public class SearchFragment extends BaseMvpFragment<SearchFragmentPresenter> imp
             params.setMargins(params.leftMargin, 435, params.rightMargin, params.bottomMargin);
             ebooksSearchView.setLayoutParams(params);
             ebooksSearchView.setQuery("", false);
+            queryStr = "";
             ebooksSearchView.clearFocus();
         });
 
@@ -125,16 +125,11 @@ public class SearchFragment extends BaseMvpFragment<SearchFragmentPresenter> imp
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                if(newText == null || newText.isEmpty()) {
-                    searchResultList.clear();
-                }
-                searchResultAdapter.notifyDataSetChanged();
                 return false;
             }
         });
 
         searchResultRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        searchResultRecyclerView.addItemDecoration(new SpacesItemDecoration(20));
         searchResultAdapter = new SearchResultAdapter(searchResultRecyclerView, searchResultList);
         searchResultAdapter.setClickListener(this);
         searchResultRecyclerView.setAdapter(searchResultAdapter);
@@ -161,10 +156,8 @@ public class SearchFragment extends BaseMvpFragment<SearchFragmentPresenter> imp
     public void onResume() {
         super.onResume();
         index = 0;
-        queryStr = "";
         if (ebooksSearchView != null) {
             ebooksSearchView.clearFocus();
-            ebooksSearchView.setQuery(null, false);
         }
     }
 
