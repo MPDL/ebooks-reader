@@ -108,7 +108,6 @@ public class SearchFragment extends BaseMvpFragment<SearchFragmentPresenter> imp
             searchResultList.clear();
         });
 
-        ebooksSearchView.setQuery("", false);
         ebooksSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -143,6 +142,30 @@ public class SearchFragment extends BaseMvpFragment<SearchFragmentPresenter> imp
             }
         });
 
+        if (savedInstanceState != null) {
+            queryStr = savedInstanceState.getString("query", "");
+            if (!queryStr.isEmpty()) {
+                ebooksSearchView.setQuery(queryStr, true);
+
+                ebooksSearchImageView.setVisibility(View.GONE);
+                TabLayout tabLayout = getActivity().findViewById(R.id.tabLayout);
+                tabLayout.setVisibility(View.GONE);
+                ebooksLabel.setVisibility(View.GONE);
+                ebooksDescriptionTextView.setVisibility(View.GONE);
+                searchHintTextView.setVisibility(View.GONE);
+
+                backImageView.setVisibility(View.VISIBLE);
+                searchResultRecyclerView.setVisibility(View.VISIBLE);
+                RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)ebooksSearchView.getLayoutParams();
+                params.setMargins(params.leftMargin, 210, params.rightMargin, params.bottomMargin);
+                ebooksSearchView.setLayoutParams(params);
+                ebooksSearchView.setIconified(false);
+                searchResultAdapter.notifyDataSetChanged();
+            } else {
+                ebooksSearchView.setQuery("", false);
+            }
+        }
+
         super.onViewCreated(view, savedInstanceState);
     }
 
@@ -158,6 +181,14 @@ public class SearchFragment extends BaseMvpFragment<SearchFragmentPresenter> imp
         index = 0;
         if (ebooksSearchView != null) {
             ebooksSearchView.clearFocus();
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (!queryStr.isEmpty()) {
+            outState.putString("query", queryStr);
         }
     }
 
